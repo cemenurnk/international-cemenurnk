@@ -29,3 +29,9 @@
 - [x] 6.1 Reemplazar los emojis en el modal y navbar por imágenes gráficas SVG de las banderas de los países referentes; verificar su correcta visualización en Windows.
 - [x] 6.2 Estandarizar las imágenes de las tarjetas de Servicios y Equipamiento con altura fija, object-cover y tarjetas flex alineadas; verificar simetría del grid.
 - [x] 6.3 Ajustar y pulir la presentación de las imágenes en Quiénes Somos, Ciclotrón y Representantes.
+
+## 7. Carrusel Hero a Pantalla Completa con Títulos Superpuestos
+
+- [x] 7.1 Reestructurar la sección <header> y el carrusel en index.html para ocupar todo el ancho y alto de la pantalla (w-full h-screen) con imágenes de fondo total (object-cover) y capa de gradiente de contraste; verificar que no haya desbordes.
+- [x] 7.2 Posicionar los títulos (header-title y header-subtitle) superpuestos en el centro del carrusel con tipografía blanca y sombras; verificar legibilidad y actualización multilingüe.
+- [x] 7.3 Asegurar la visibilidad y estética de la barra de navegación fija superior sobre el carrusel y reubicar los controles de navegación del carrusel (dots); verificar responsividad en móviles y escritorio.

@@ -1,10 +1,10 @@
-# Spec Delta
+# localization Specification
 
 ## Purpose
 
-Proporciona soporte multiidioma en el sitio web de CEMENURNK, permitiendo la visualización en español, inglés, chino y alemán, la selección interactiva de preferencia de idioma en la primera visita del usuario mediante un modal, la persistencia en el navegador y el cambio dinámico de idioma a través de la barra de navegación con banderas gráficas referentes. Asimismo, estandariza la disposición de imágenes en el sitio y simplifica la visualización de la sección de representantes.
+Proporciona soporte multiidioma en el sitio web de CEMENURNK, permitiendo la visualización en español, inglés, chino y alemán, la selección interactiva de preferencia de idioma en la primera visita del usuario mediante un modal, la persistencia en el navegador y el cambio dinámico de idioma a través de la barra de navegación con banderas gráficas referentes. Asimismo, estandariza la disposición de imágenes en el sitio, simplifica la visualización de la sección de representantes y transforma el encabezado en un carrusel hero de pantalla completa con títulos superpuestos en blanco.
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: German Language Support
 The system SHALL incorporate the German language (`de`) into the set of available languages, translating all textual content, interactive labels, image alternative texts, and map resources on the website.
@@ -55,3 +55,10 @@ The system SHALL display service and equipment images using consistent aspect ra
 #### Scenario: Viewing service and equipment cards
 - **WHEN** a user browses the services or equipment sections
 - **THEN** all images within the cards conform to a standardized height and aspect ratio (`object-cover`) ensuring visually balanced cards.
+
+### Requirement: Full-Screen Hero Carousel Presentation
+The system SHALL render the hero image carousel occupying the full viewport width and height (`100vw` / `100vh`), maintaining the fixed navigation bar accessible at the top and displaying the main institutional title and subtitle directly over the carousel in white text with an overlay for contrast.
+
+#### Scenario: Viewing full-screen hero section
+- **WHEN** a user visits the homepage
+- **THEN** the hero carousel expands to full viewport dimensions, the navbar is visible on top, and the institutional titles are rendered over the carousel images in white text.
