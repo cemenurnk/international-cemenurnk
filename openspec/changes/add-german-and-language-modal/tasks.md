@@ -23,3 +23,9 @@
 ## 5. Actualización de la Sección Representantes
 
 - [x] 5.1 Modificar la sección #representantes en index.html para conservar únicamente la tarjeta del CEO (Martín Mutuberria), retirando las tarjetas secundarias y adaptando el contenedor para que quede centrado; verificar la visualización responsiva.
+
+## 6. Banderas Gráficas y Disposición de Imágenes
+
+- [x] 6.1 Reemplazar los emojis en el modal y navbar por imágenes gráficas SVG de las banderas de los países referentes; verificar su correcta visualización en Windows.
+- [x] 6.2 Estandarizar las imágenes de las tarjetas de Servicios y Equipamiento con altura fija, object-cover y tarjetas flex alineadas; verificar simetría del grid.
+- [x] 6.3 Ajustar y pulir la presentación de las imágenes en Quiénes Somos, Ciclotrón y Representantes.

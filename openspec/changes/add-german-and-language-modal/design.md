@@ -14,10 +14,12 @@ Véase `proposal.md` y `specs/localization/spec.md` para la motivación y requer
 - Persistir la preferencia de idioma en `localStorage` bajo la clave `cemenurnk_language`.
 - Reemplazar el botón cíclico del navbar por un menú desplegable (dropdown) que muestre el idioma activo y permita cambiar a cualquiera de los 4 idiomas con un solo clic.
 - Simplificar la sección de representantes para mostrar únicamente al CEO (Martín Mutuberria) en un diseño centrado y limpio.
+- Incorporar banderas gráficas vectoriales/SVG de países referentes para evitar el problema de emojis no soportados en Windows.
+- Estandarizar la disposición y dimensiones de las imágenes en toda la página (Servicios, Equipamiento, Institucional, Ciclotrón) para lograr simetría y coherencia visual en las tarjetas.
 - Mantener compatibilidad total sin agregar dependencias ni herramientas de compilación externas.
 
 **Non-Goals:**
-- No se incorporarán bibliotecas externas de internacionalización (como i18next) ni frameworks de frontend; se mantendrá la arquitectura ligera en Vanilla JS.
+- No se incorporarán bibliotecas externas pesadas; se mantendrá la arquitectura ligera en Vanilla JS y Tailwind CDN.
 - No se requiere backend ni persistencia en base de datos remota.
 
 ## Decisions
@@ -27,35 +29,35 @@ Véase `proposal.md` y `specs/localization/spec.md` para la motivación y requer
   - Si existe un valor válido (`es`, `en`, `zh`, `de`), se aplica inmediatamente al cargar la página (`window.addEventListener('DOMContentLoaded')`).
   - Si no existe (primera visita o almacenamiento limpio), se detecta el idioma del navegador como fallback visual preliminar y se despliega el modal de bienvenida.
   - Al seleccionar un idioma en el modal o en el navbar, se ejecuta `localStorage.setItem('cemenurnk_language', lang)` y se actualiza la interfaz.
-- **Alternativa descartada**: Cookies de sesión o volver a preguntar en cada recarga (generaría una mala experiencia de usuario).
 
 ### 2. Estructura y comportamiento del Modal de Bienvenida
 - **Decisión**: Modal con superposición (`fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4`).
   - Tarjeta con diseño limpio y bienvenida multilingüe.
-  - Cuatro botones con banderas y nombres nativos:
-    - 🇪🇸 Español
-    - 🇬🇧 English
-    - 🇨🇳 中文
-    - 🇩🇪 Deutsch
+  - Cuatro botones con banderas gráficas SVG/vectoriales nítidas y nombres nativos:
+    - Español (🇪🇸 España / 🇦🇷 Argentina)
+    - English (🇬🇧 Reino Unido / 🇺🇸 EE.UU.)
+    - 中文 (🇨🇳 China)
+    - Deutsch (🇩🇪 Alemania)
   - Al hacer clic en cualquier opción, se invoca `updateLanguage(lang)`, se guarda en `localStorage` y se oculta el modal agregando la clase `hidden`.
-- **Alternativa descartada**: Banner inferior flotante (descartado en la etapa de exploración a favor del modal centrado).
 
 ### 3. Rediseño del selector del Navbar a Dropdown
 - **Decisión**: Crear un contenedor relativo en el navbar con:
-  - Botón disparador que muestra la bandera y código del idioma actual más un icono indicador (chevron).
-  - Menú desplegable flotante (`absolute right-0 mt-2 w-44 bg-white shadow-xl rounded-xl border border-gray-100 z-50 hidden`) con la lista de opciones.
+  - Botón disparador que muestra la bandera gráfica y código del idioma actual más un icono indicador (chevron).
+  - Menú desplegable flotante con las 4 opciones de idioma acompañadas de sus banderas gráficas.
   - Evento de cierre al hacer clic fuera del dropdown (`document.addEventListener('click')`).
-- **Alternativa descartada**: Mantener el botón de ciclo que obligaría a dar hasta 3 clics para llegar a un idioma.
 
-### 4. Diccionario de traducciones para Alemán (`de`)
-- **Decisión**: Completar las traducciones técnicas y médicas en alemán manteniendo la coherencia terminológica (ej. *Strahlentherapie* para Radioterapia, *Bildgebende Diagnostik* para Diagnóstico por Imágenes, *Zyklotron* para Ciclotrón, etc.) y configurar el mapa de Google Maps con parámetros en alemán (`de-DE`).
+### 4. Banderas gráficas vectoriales / SVG
+- **Decisión**: Para evitar que en Windows los emojis de banderas se muestren como letras de código de país en blanco y negro, se incorporan banderas gráficas SVG limpias (utilizando SVGs vectoriales integrados con dimensiones consistentes `w-6 h-4` o `w-7 h-5` con esquinas redondeadas suaves y bordes sutiles).
 
-### 5. Simplificación de la Sección de Representantes
-- **Decisión**: Reemplazar la grilla de 3 columnas (`grid grid-cols-1 md:grid-cols-3 gap-8`) por un contenedor centrado con un ancho máximo acotado (`max-w-md mx-auto`).
-  - Conservar únicamente la tarjeta de Martín Mutuberria (CEO).
-  - Remover las tarjetas de Gabriel Martínez y Lucas Dórdolo de la estructura HTML.
+### 5. Estandarización de Imágenes en Tarjetas
+- **Decisión**:
+  - En **Servicios**: Convertir las tarjetas a `flex flex-col justify-between h-full` con contenedor de imagen `w-full h-48 overflow-hidden rounded-xl mt-4` e imagen con `w-full h-full object-cover`.
+  - En **Equipamiento**: Convertir las tarjetas a `flex flex-col justify-between h-full` con contenedor de imagen `w-full h-52 overflow-hidden rounded-xl mt-4` e imagen con `w-full h-full object-cover`.
+  - En **Quiénes Somos**: Asegurar que la imagen `equipo1.png` mantenga una altura y aspecto proporcional equilibrado con el bloque de texto contiguo.
+  - En **Ciclotrón**: Ajustar `ciclotron.jpg` a `w-full h-80 object-cover rounded-xl shadow-lg`.
+  - En **Representantes**: La imagen del CEO con `w-48 h-48 rounded-full object-cover mx-auto`.
 
 ## Risks / Trade-offs
 
-- **[Navegación privada o `localStorage` deshabilitado]** → Mitigación: Proteger llamadas a `localStorage` dentro de bloques `try/catch` para evitar excepciones en modos de navegación con almacenamiento bloqueado, recurriendo en ese caso a memoria de sesión/fallback.
-- **[Superposición en pantallas móviles]** → Mitigación: Configurar z-index adecuado (`z-50`), tamaño responsivo con scroll interno si fuera necesario (`max-h-[90vh] overflow-y-auto`) y espaciado táctil cómodo.
+- **[Navegación privada o `localStorage` deshabilitado]** → Mitigación: Proteger llamadas a `localStorage` dentro de bloques `try/catch`.
+- **[Imágenes con diferentes relaciones de aspecto originales]** → Mitigación: El uso de `object-cover` junto a un contenedor con dimensiones fijas garantiza que ninguna imagen se deforme (manteniendo proporción) y que todas las tarjetas mantengan simetría exacta en el grid.
