@@ -116,8 +116,20 @@
 
         @media (max-width: 639px) {
             html[lang="de"] [data-key="header-title"] {
-                font-size: 2.025rem; /* ~10% smaller than 2.25rem (text-4xl) */
+                font-size: 1.6875rem; /* 25% smaller than 2.25rem (text-4xl) */
                 line-height: 1.2;
+            }
+
+            html[lang="de"] [data-key="header-subtitle"] {
+                font-size: 0.84375rem; /* 25% smaller than 1.125rem (text-lg) */
+                line-height: 1.3;
+                margin-bottom: 1.5rem;
+            }
+
+            html[lang="de"] header a[href="#servicios"],
+            html[lang="de"] header a[href="#contacto"] {
+                font-size: 0.75rem; /* 25% smaller than 1rem (text-base) */
+                padding: 0.65625rem 1.5rem; /* 25% smaller than py-3.5 px-8 */
             }
         }
     </style>
