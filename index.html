@@ -8,6 +8,7 @@
     <title>Centro de Medicina Nuclear y Radioterapia</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -116,20 +117,36 @@
 
         @media (max-width: 639px) {
             html[lang="de"] [data-key="header-title"] {
-                font-size: 1.6875rem; /* 25% smaller than 2.25rem (text-4xl) */
+                font-size: 1.6875rem;
+                /* 25% smaller than 2.25rem (text-4xl) */
                 line-height: 1.2;
             }
 
             html[lang="de"] [data-key="header-subtitle"] {
-                font-size: 0.84375rem; /* 25% smaller than 1.125rem (text-lg) */
+                font-size: 0.84375rem;
+                /* 25% smaller than 1.125rem (text-lg) */
                 line-height: 1.3;
                 margin-bottom: 1.5rem;
             }
 
             html[lang="de"] header a[href="#servicios"],
             html[lang="de"] header a[href="#contacto"] {
-                font-size: 0.75rem; /* 25% smaller than 1rem (text-base) */
-                padding: 0.65625rem 1.5rem; /* 25% smaller than py-3.5 px-8 */
+                font-size: 0.75rem;
+                /* 25% smaller than 1rem (text-base) */
+                padding: 0.65625rem 1.5rem;
+                /* 25% smaller than py-3.5 px-8 */
+            }
+
+            /* Responsive alemán para pacientes atendidos por servicio: ubicar cifras debajo del nombre */
+            html[lang="de"] .service-stat-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.375rem;
+            }
+
+            html[lang="de"] .service-stat-item .service-stat-number {
+                align-self: flex-start;
+                padding-left: 1.25rem;
             }
         }
     </style>
@@ -221,12 +238,12 @@
                 <div class="hidden md:flex space-x-8 items-center">
                     <a href="#quienes-somos" class="text-gray-600 hover:text-secondary transition duration-300"
                         data-key="nav-about">Quiénes Somos</a>
+                    <a href="#cifras" class="text-gray-600 hover:text-secondary transition duration-300"
+                        data-key="nav-stats">En Cifras</a>
                     <a href="#servicios" class="text-gray-600 hover:text-secondary transition duration-300"
                         data-key="nav-services">Servicios</a>
                     <a href="#equipamiento" class="text-gray-600 hover:text-secondary transition duration-300"
                         data-key="nav-equipment">Equipamiento</a>
-                    <a href="#representantes" class="text-gray-600 hover:text-secondary transition duration-300"
-                        data-key="nav-reps">Representantes</a>
                     <a href="#contacto" class="text-gray-600 hover:text-secondary transition duration-300"
                         data-key="nav-contact">Contacto</a>
                 </div>
@@ -337,14 +354,14 @@
                     class="inline-block py-1.5 px-5 rounded-full bg-white/10 backdrop-blur-md text-blue-200 text-xs md:text-sm font-semibold tracking-wider uppercase mb-5 border border-white/20 shadow-sm">
                     Formosa, Argentina
                 </span>
-                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-4 drop-shadow-2xl tracking-wide"
-                    data-key="header-title">
-                    CENTRO DE MEDICINA NUCLEAR Y RADIOTERAPIA
-                </h1>
                 <h2 class="text-lg sm:text-2xl md:text-3xl text-blue-100 font-semibold mb-8 drop-shadow-lg tracking-wider"
                     data-key="header-subtitle">
                     "PDTE. DR. NÉSTOR C. KIRCHNER"
                 </h2>
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-4 drop-shadow-2xl tracking-wide"
+                    data-key="header-title">
+                    CENTRO DE MEDICINA NUCLEAR Y RADIOTERAPIA
+                </h1>
                 <div class="flex flex-wrap justify-center gap-4">
                     <a href="#servicios"
                         class="bg-[#0098ce] hover:bg-[#0082b0] text-white font-bold py-3.5 px-8 rounded-full shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-0.5">
@@ -368,7 +385,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div class="text-lg text-gray-600">
                     <p class="mb-6 leading-relaxed" data-key="about-paragraph-1">
-                        Somos una <strong class="text-secondary">FUNDACIÓN</strong> sin fines de lucro dedicada a
+                        Somos una <strong class="text-secondary">FUNDACIÓN</strong> sin fines de lucro ubicada en el
+                        norte de Argentina (limítrofe con Paraguay y Brasil) y en continuo crecimiento y expansión,
+                        dedicada a
                         brindar asistencia en salud, con un enfoque principal en el diagnóstico y tratamiento
                         oncológico, así como en diversas patologías.
                     </p>
@@ -384,20 +403,568 @@
                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
                 </div>
             </div>
-            <div class="mt-12 text-center text-lg text-gray-600">
-                <h3 class="text-2xl font-bold text-gray-700 mb-4" data-key="about-mission-vision-title">Nuestra Misión y
-                    Visión</h3>
-                <p class="mb-4" data-key="about-mission">
-                    <strong class="text-secondary">Misión:</strong> Brindar servicios de excelencia en el cuidado de la
-                    salud a toda la comunidad, acompañando al paciente y su familia, buscando asegurar la equidad y
-                    accesibilidad.
-                </p>
-                <p data-key="about-vision">
-                    <strong class="text-secondary">Visión:</strong> Ser una institución de referencia a nivel nacional e
-                    internacional en cuidados de la salud, investigación y desarrollo, reconocida por la calidad y
-                    excelencia de sus servicios.
+            <!-- Misión, Visión y Valores -->
+            <div class="mt-20">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-3" data-key="about-mission-vision-values-title">Misión, Visión y Valores</h3>
+                    <div class="w-16 h-1 bg-secondary mx-auto rounded-full"></div>
+                </div>
+
+                <!-- Misión y Visión Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                    <!-- Misión -->
+                    <div class="bg-gradient-to-br from-blue-50/70 to-white p-8 rounded-2xl border border-blue-100 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center space-x-3 mb-4">
+                                <div class="w-10 h-10 rounded-xl bg-[#0098ce]/10 text-secondary flex items-center justify-center font-bold">
+                                    <svg class="w-6 h-6 text-[#0098ce]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </div>
+                                <h4 class="text-2xl font-bold text-primary" data-key="about-mission-title">Misión</h4>
+                            </div>
+                            <p class="text-gray-600 leading-relaxed text-base" data-key="about-mission-text">
+                                Brindar servicios de excelencia en el cuidado de la salud a toda la comunidad, acompañando al paciente y su familia, buscando asegurar la equidad y accesibilidad.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Visión -->
+                    <div class="bg-gradient-to-br from-blue-50/70 to-white p-8 rounded-2xl border border-blue-100 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center space-x-3 mb-4">
+                                <div class="w-10 h-10 rounded-xl bg-[#0098ce]/10 text-secondary flex items-center justify-center font-bold">
+                                    <svg class="w-6 h-6 text-[#0098ce]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                </div>
+                                <h4 class="text-2xl font-bold text-primary" data-key="about-vision-title">Visión</h4>
+                            </div>
+                            <p class="text-gray-600 leading-relaxed text-base" data-key="about-vision-text">
+                                Ser una institución de referencia a nivel nacional e internacional en cuidados de la salud, investigación y desarrollo, reconocida por la calidad y excelencia de sus servicios.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Valores Title -->
+                <div class="text-center mb-8">
+                    <h4 class="text-2xl font-bold text-gray-700" data-key="about-values-title">Nuestros Valores</h4>
+                </div>
+
+                <!-- 6 Valores Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 1. Compromiso y Responsabilidad -->
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col hover:-translate-y-1">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-secondary flex items-center justify-center mb-4">
+                            <svg class="w-5 h-5 text-[#0098ce]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h5 class="text-lg font-bold text-gray-800 mb-2" data-key="val-commitment-title">Compromiso y Responsabilidad</h5>
+                        <p class="text-sm text-gray-600 leading-relaxed" data-key="val-commitment-desc">Nos comprometemos con la calidad de nuestros servicios para la población, con el desarrollo y transferencia de conocimiento a la sociedad, y con el crecimiento personal y profesional de nuestro recurso humano.</p>
+                    </div>
+
+                    <!-- 2. Igualdad Social -->
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col hover:-translate-y-1">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-secondary flex items-center justify-center mb-4">
+                            <svg class="w-5 h-5 text-[#0098ce]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        </div>
+                        <h5 class="text-lg font-bold text-gray-800 mb-2" data-key="val-equality-title">Igualdad Social</h5>
+                        <p class="text-sm text-gray-600 leading-relaxed" data-key="val-equality-desc">Brindamos nuestros conocimientos y capacidad tecnológica a toda la población por igual.</p>
+                    </div>
+
+                    <!-- 3. Respeto -->
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col hover:-translate-y-1">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-secondary flex items-center justify-center mb-4">
+                            <svg class="w-5 h-5 text-[#0098ce]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </div>
+                        <h5 class="text-lg font-bold text-gray-800 mb-2" data-key="val-respect-title">Respeto</h5>
+                        <p class="text-sm text-gray-600 leading-relaxed" data-key="val-respect-desc">Construimos relaciones basadas en el reconocimiento del otro y en el respeto a su identidad individual y dignidad humana.</p>
+                    </div>
+
+                    <!-- 4. Integridad -->
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col hover:-translate-y-1">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-secondary flex items-center justify-center mb-4">
+                            <svg class="w-5 h-5 text-[#0098ce]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h5 class="text-lg font-bold text-gray-800 mb-2" data-key="val-integrity-title">Integridad</h5>
+                        <p class="text-sm text-gray-600 leading-relaxed" data-key="val-integrity-desc">Asumimos en todo momento y para todas las prestaciones una conducta ética, honesta, prudente, franca y transparente con todos aquellos con quienes nos vinculamos.</p>
+                    </div>
+
+                    <!-- 5. Cultura de trabajo -->
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col hover:-translate-y-1">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-secondary flex items-center justify-center mb-4">
+                            <svg class="w-5 h-5 text-[#0098ce]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                        </div>
+                        <h5 class="text-lg font-bold text-gray-800 mb-2" data-key="val-workculture-title">Cultura de Trabajo e Integridad Institucional</h5>
+                        <p class="text-sm text-gray-600 leading-relaxed" data-key="val-workculture-desc">Valoramos el esfuerzo y compromiso, incentivando los equipos multidisciplinarios, con capacitación y cooperación constante, y actitud de servicio orientada al bienestar del paciente. Mantenemos ética en nuestra gestión, decisiones estratégicas y relaciones institucionales.</p>
+                    </div>
+
+                    <!-- 6. Liderazgo -->
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col hover:-translate-y-1">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-secondary flex items-center justify-center mb-4">
+                            <svg class="w-5 h-5 text-[#0098ce]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                            </svg>
+                        </div>
+                        <h5 class="text-lg font-bold text-gray-800 mb-2" data-key="val-leadership-title">Liderazgo</h5>
+                        <p class="text-sm text-gray-600 leading-relaxed" data-key="val-leadership-desc">Somos líderes en tecnología, en el desarrollo de nuevas técnicas aplicadas a la salud y en recursos humanos altamente cualificados, consolidándonos como un centro modelo de referencia.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- "CEMENURNK en Cifras" Section -->
+    <section id="cifras" class="py-20 bg-slate-900 text-white relative overflow-hidden">
+        <!-- Background subtle decorative pattern -->
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#0098ce_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="inline-block py-1.5 px-4 rounded-full bg-blue-500/10 text-cyan-400 text-xs md:text-sm font-semibold tracking-wider uppercase mb-4 border border-cyan-500/20" data-key="cifras-badge">
+                    Impacto y Trayectoria
+                </span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4 tracking-tight" data-key="cifras-title">
+                    CEMENURNK en Cifras
+                </h2>
+                <div class="w-20 h-1.5 bg-[#0098ce] mx-auto rounded-full mb-6"></div>
+                <p class="text-base md:text-lg text-slate-300 leading-relaxed" data-key="cifras-subtitle">
+                    Indicadores consolidados de actividad asistencial, equipamiento tecnológico, talento humano y alcance regional desde el inicio de nuestras actividades.
                 </p>
             </div>
+
+            <!-- Top KPI Cards Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 mb-16">
+                <!-- 1. Año de Inicio -->
+                <div class="bg-slate-800/80 backdrop-blur-md rounded-2xl p-5 border border-slate-700/60 shadow-lg text-center hover:border-cyan-500/50 hover:bg-slate-800 transition duration-300 group">
+                    <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <div class="text-3xl font-extrabold text-white mb-1 tracking-tight">2022</div>
+                    <div class="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1" data-key="kpi-year-title">Año de Inicio</div>
+                    <div class="text-[11px] text-slate-400 leading-tight" data-key="kpi-year-desc">Puesta en marcha del centro</div>
+                </div>
+
+                <!-- 2. Pacientes Únicos -->
+                <div class="bg-slate-800/80 backdrop-blur-md rounded-2xl p-5 border border-slate-700/60 shadow-lg text-center hover:border-cyan-500/50 hover:bg-slate-800 transition duration-300 group">
+                    <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <div class="text-3xl font-extrabold text-white mb-1 tracking-tight">4.216</div>
+                    <div class="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1" data-key="kpi-patients-title">Pacientes Únicos</div>
+                    <div class="text-[11px] text-slate-400 leading-tight" data-key="kpi-patients-desc">Sin duplicación institucional</div>
+                </div>
+
+                <!-- 3. Sesiones de RT -->
+                <div class="bg-slate-800/80 backdrop-blur-md rounded-2xl p-5 border border-slate-700/60 shadow-lg text-center hover:border-cyan-500/50 hover:bg-slate-800 transition duration-300 group">
+                    <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <div class="text-3xl font-extrabold text-white mb-1 tracking-tight">31.260</div>
+                    <div class="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1" data-key="kpi-sessions-title">Sesiones de RT</div>
+                    <div class="text-[11px] text-slate-400 leading-tight" data-key="kpi-sessions-desc">Teleterapia y braquiterapia</div>
+                </div>
+
+                <!-- 4. Estudios y Procedimientos -->
+                <div class="bg-slate-800/80 backdrop-blur-md rounded-2xl p-5 border border-slate-700/60 shadow-lg text-center hover:border-cyan-500/50 hover:bg-slate-800 transition duration-300 group">
+                    <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                        </svg>
+                    </div>
+                    <div class="text-3xl font-extrabold text-white mb-1 tracking-tight">4.514</div>
+                    <div class="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1" data-key="kpi-studies-title">Estudios Dx</div>
+                    <div class="text-[11px] text-slate-400 leading-tight" data-key="kpi-studies-desc">4 servicios diagnósticos</div>
+                </div>
+
+                <!-- 5. Equipo Profesional -->
+                <div class="bg-slate-800/80 backdrop-blur-md rounded-2xl p-5 border border-slate-700/60 shadow-lg text-center hover:border-cyan-500/50 hover:bg-slate-800 transition duration-300 group">
+                    <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                    </div>
+                    <div class="text-3xl font-extrabold text-white mb-1 tracking-tight">77</div>
+                    <div class="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1" data-key="kpi-team-title">Profesionales</div>
+                    <div class="text-[11px] text-slate-400 leading-tight" data-key="kpi-team-desc">Diversidad interdisciplinaria</div>
+                </div>
+
+                <!-- 6. Infraestructura -->
+                <div class="bg-slate-800/80 backdrop-blur-md rounded-2xl p-5 border border-slate-700/60 shadow-lg text-center hover:border-cyan-500/50 hover:bg-slate-800 transition duration-300 group">
+                    <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                        </svg>
+                    </div>
+                    <div class="text-3xl font-extrabold text-white mb-1 tracking-tight">3.150 m²</div>
+                    <div class="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1" data-key="kpi-infra-title">Superficie</div>
+                    <div class="text-[11px] text-slate-400 leading-tight" data-key="kpi-infra-desc">Infraestructura de punta</div>
+                </div>
+            </div>
+
+            <!-- Detailed Graphs Grid (Two Main Columns) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+                
+                <!-- Left Column: Pacientes por Servicio (Chart de Torta / Donut) & Prácticas -->
+                <div class="lg:col-span-6 space-y-8">
+                    <!-- Donut Chart Card -->
+                    <div class="bg-slate-800/90 backdrop-blur-md rounded-3xl p-6 md:p-8 border border-slate-700 shadow-xl">
+                        <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-700/80">
+                            <div>
+                                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span>
+                                    <span data-key="chart-service-title">Pacientes Atendidos por Servicio</span>
+                                </h3>
+                                <p class="text-xs text-slate-400 mt-1" data-key="chart-service-desc">Alcance asistencial acumulado por especialidad médica</p>
+                            </div>
+                        </div>
+
+                        <!-- Chart Canvas Container -->
+                        <div class="relative w-full h-64 md:h-72 flex items-center justify-center mb-6">
+                            <canvas id="servicesPieChart"></canvas>
+                        </div>
+
+                        <!-- Legend / Breakdown pills -->
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div class="service-stat-item bg-slate-900/60 p-3 rounded-xl border border-slate-700/50 flex items-center justify-between">
+                                <span class="flex items-center gap-2 text-slate-300">
+                                    <span class="w-3 h-3 rounded-full bg-[#0098ce] flex-shrink-0"></span>
+                                    <span data-key="service-legend-imaging">Diagnóstico por Imágenes</span>
+                                </span>
+                                <span class="service-stat-number font-bold text-white flex-shrink-0">3.347</span>
+                            </div>
+                            <div class="service-stat-item bg-slate-900/60 p-3 rounded-xl border border-slate-700/50 flex items-center justify-between">
+                                <span class="flex items-center gap-2 text-slate-300">
+                                    <span class="w-3 h-3 rounded-full bg-[#1b3967] flex-shrink-0"></span>
+                                    <span data-key="service-legend-radiotherapy">Radioterapia</span>
+                                </span>
+                                <span class="service-stat-number font-bold text-white flex-shrink-0">1.522</span>
+                            </div>
+                            <div class="service-stat-item bg-slate-900/60 p-3 rounded-xl border border-slate-700/50 flex items-center justify-between">
+                                <span class="flex items-center gap-2 text-slate-300">
+                                    <span class="w-3 h-3 rounded-full bg-[#0d9488] flex-shrink-0"></span>
+                                    <span data-key="service-legend-wellbeing">Bienestar y Calidad</span>
+                                </span>
+                                <span class="service-stat-number font-bold text-white flex-shrink-0">1.990</span>
+                            </div>
+                            <div class="service-stat-item bg-slate-900/60 p-3 rounded-xl border border-slate-700/50 flex items-center justify-between">
+                                <span class="flex items-center gap-2 text-slate-300">
+                                    <span class="w-3 h-3 rounded-full bg-[#f59e0b] flex-shrink-0"></span>
+                                    <span data-key="service-legend-oncology">Oncología</span>
+                                </span>
+                                <span class="service-stat-number font-bold text-white flex-shrink-0">142</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prácticas Realizadas (Totales Acumulados) -->
+                    <div class="bg-slate-800/90 backdrop-blur-md rounded-3xl p-6 md:p-8 border border-slate-700 shadow-xl">
+                        <div class="mb-6 pb-4 border-b border-slate-700/80">
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span>
+                                <span data-key="practices-title">Prácticas y Prestaciones Acumuladas</span>
+                            </h3>
+                            <p class="text-xs text-slate-400 mt-1" data-key="practices-desc">Volumen integral de tratamientos y atenciones aplicadas</p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- Sesiones RT -->
+                            <div>
+                                <div class="flex justify-between text-xs mb-1.5">
+                                    <span class="text-slate-300 font-medium" data-key="pract-rt-sessions">Sesiones de Radioterapia (Teleterapia y Braquiterapia)</span>
+                                    <span class="font-extrabold text-cyan-400">31.260</span>
+                                </div>
+                                <div class="w-full bg-slate-700/60 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-gradient-to-r from-blue-500 to-cyan-400 h-full rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Atenciones de Bienestar -->
+                            <div>
+                                <div class="flex justify-between text-xs mb-1.5">
+                                    <span class="text-slate-300 font-medium" data-key="pract-wellbeing">Atenciones de Bienestar (Nutrición y Psicología)</span>
+                                    <span class="font-extrabold text-teal-400">9.570</span>
+                                </div>
+                                <div class="w-full bg-slate-700/60 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-teal-400 h-full rounded-full" style="width: 30.6%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Estudios diagnósticos -->
+                            <div>
+                                <div class="flex justify-between text-xs mb-1.5">
+                                    <span class="text-slate-300 font-medium" data-key="pract-dx-studies">Estudios y Procedimientos Diagnósticos (4 servicios)</span>
+                                    <span class="font-extrabold text-blue-400">4.514</span>
+                                </div>
+                                <div class="w-full bg-slate-700/60 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-blue-500 h-full rounded-full" style="width: 14.4%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Tratamientos de RT -->
+                            <div>
+                                <div class="flex justify-between text-xs mb-1.5">
+                                    <span class="text-slate-300 font-medium" data-key="pract-rt-treatments">Tratamientos de Radioterapia (3D, VMAT, SBRT, Bq)</span>
+                                    <span class="font-extrabold text-indigo-400">1.935</span>
+                                </div>
+                                <div class="w-full bg-slate-700/60 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-indigo-400 h-full rounded-full" style="width: 6.2%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Aplicaciones oncológicas -->
+                            <div>
+                                <div class="flex justify-between text-xs mb-1.5">
+                                    <span class="text-slate-300 font-medium" data-key="pract-onco-apps">Aplicaciones Oncológicas (Quimioterapia, Inmunoterapia, Hidratación)</span>
+                                    <span class="font-extrabold text-amber-400">376</span>
+                                </div>
+                                <div class="w-full bg-slate-700/60 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-amber-400 h-full rounded-full" style="width: 2%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Procedencia de Pacientes (Mapa de Argentina + Barras) -->
+                <div class="lg:col-span-6 bg-slate-800/90 backdrop-blur-md rounded-3xl p-6 md:p-8 border border-slate-700 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-700/80">
+                            <div>
+                                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span>
+                                    <span data-key="map-origin-title">Procedencia de los Pacientes</span>
+                                </h3>
+                                <p class="text-xs text-slate-400 mt-1" data-key="map-origin-desc">Distribución geográfica acumulada (4.216 pacientes únicos)</p>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Map & Stats Container -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center mb-6">
+                            <!-- Vector SVG Map of Argentina -->
+                            <div class="md:col-span-5 flex justify-center py-2">
+                                <svg viewBox="-20 -20 400 740" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[340px] mx-auto filter drop-shadow-xl select-none">
+  <defs>
+    <!-- Soft shadow filter -->
+    <filter id="bubble-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Provinces Background -->
+  <g stroke="#ffffff" stroke-width="0.8">
+    <path id="map-AR.TF" d="M124.3,693.1 L130.8,693.6 L128.9,695.4 L128.7,694.1 L125.3,695.7 L124.7,694.5 L120.2,697.0 L119.2,695.5 Z M72.7,696.4 L71.9,696.4 L70.4,649.7 L74.9,656.0 L75.1,657.5 L72.1,659.8 L71.8,662.3 L73.1,663.5 L77.4,664.3 L79.2,669.7 L81.6,672.3 L84.6,674.6 L84.5,676.1 L88.0,679.1 L94.6,683.1 L98.1,687.6 L106.0,691.5 L107.8,691.8 L112.5,691.1 L114.4,691.4 L112.2,697.1 L111.0,696.5 L107.9,698.3 L107.5,697.0 L104.2,697.0 L104.2,698.3 L100.2,698.8 L97.5,700.0 L94.3,697.7 L91.5,697.0 L78.8,696.0 L76.0,695.0 L75.7,696.0 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.BA" d="M167.8,394.3 L166.6,396.0 L164.5,394.7 L165.7,392.0 Z M168.3,391.1 L166.5,387.9 L166.8,386.8 L168.4,387.9 Z M171.0,366.4 L171.7,368.3 L169.5,367.2 L168.1,364.9 Z M236.5,261.5 L237.4,265.4 L233.9,267.3 L235.8,269.1 L235.2,272.3 L234.0,273.2 L233.7,276.2 L235.3,277.7 L237.8,275.4 L240.4,277.6 L245.2,279.7 L251.0,284.1 L255.3,289.4 L256.9,293.2 L256.6,294.6 L252.6,299.4 L251.9,304.9 L253.5,308.9 L258.6,313.5 L261.4,313.3 L262.5,314.6 L262.1,324.2 L261.6,325.8 L257.7,330.4 L254.4,335.4 L249.6,339.9 L245.8,344.4 L245.0,348.8 L243.9,350.2 L234.0,355.2 L218.6,359.6 L204.7,361.6 L188.5,363.5 L183.9,363.8 L179.2,363.2 L177.7,363.7 L169.4,361.8 L167.4,359.0 L163.5,358.9 L164.5,362.1 L163.8,365.0 L165.3,368.3 L169.0,370.8 L168.5,371.7 L166.3,369.5 L164.8,369.5 L168.4,372.5 L167.2,380.3 L164.1,380.0 L162.7,388.4 L160.6,390.3 L161.7,393.6 L163.1,394.5 L164.5,397.9 L162.6,402.3 L156.2,405.6 L155.1,405.6 L154.2,403.4 L150.2,399.2 L145.9,398.3 L146.8,369.1 L148.7,298.8 L149.4,278.1 L149.9,265.8 L150.5,265.1 L158.9,265.4 L178.9,266.0 L192.7,251.9 L193.7,249.5 L197.8,250.0 L200.1,251.5 L201.5,250.9 L202.6,247.9 L205.2,244.7 L204.9,243.6 L207.9,246.7 L212.3,249.7 L213.7,251.6 L216.6,253.2 L218.1,252.8 L220.3,254.7 L222.6,254.6 L224.2,256.9 L226.5,257.1 L232.4,261.7 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.SJ" d="M28.1,222.5 L26.9,221.9 L25.7,216.7 L28.0,215.1 L26.7,213.5 L24.6,213.3 L21.4,206.7 L21.6,201.5 L23.0,197.1 L24.8,197.5 L26.8,195.4 L25.4,193.6 L25.7,190.7 L28.0,181.5 L30.6,182.0 L32.9,180.2 L33.7,176.2 L31.4,175.5 L32.3,172.3 L32.0,167.7 L29.6,160.3 L29.8,158.5 L31.9,155.6 L33.8,154.6 L33.7,151.7 L34.9,148.5 L34.7,144.9 L35.9,143.2 L36.2,139.8 L42.1,141.4 L45.4,144.2 L46.6,147.5 L50.1,151.8 L48.7,154.6 L49.9,158.5 L48.7,162.7 L49.4,165.4 L54.5,164.6 L61.4,166.4 L65.6,170.0 L68.8,173.5 L74.2,177.8 L75.5,180.6 L82.6,187.8 L84.5,191.5 L83.8,193.7 L84.9,195.2 L84.2,201.0 L85.2,204.5 L88.5,206.7 L89.1,209.3 L91.0,211.9 L86.4,212.2 L80.0,211.4 L79.2,212.4 L79.2,220.1 L77.9,219.2 L71.3,219.7 L67.9,216.2 L61.3,218.1 L56.1,222.1 L52.3,222.0 L51.8,216.7 L49.9,216.8 L47.7,214.4 L45.2,216.4 L42.3,216.5 L39.4,218.1 L39.2,220.4 L33.0,222.2 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.MZ" d="M28.4,303.0 L29.2,301.2 L28.4,297.5 L29.4,296.3 L28.1,293.1 L28.2,289.9 L25.6,283.7 L28.3,282.7 L28.7,278.2 L29.9,274.9 L30.5,270.3 L33.3,266.2 L33.5,263.7 L37.1,262.9 L36.5,257.4 L35.5,256.9 L35.6,250.7 L37.2,244.6 L35.0,241.8 L33.2,243.1 L31.5,240.8 L31.2,237.7 L33.1,234.2 L30.5,232.0 L29.7,225.7 L28.1,222.5 L33.0,222.2 L39.2,220.4 L39.4,218.1 L42.3,216.5 L45.2,216.4 L47.7,214.4 L49.9,216.8 L51.8,216.7 L52.3,222.0 L56.1,222.1 L61.3,218.1 L67.9,216.2 L71.3,219.7 L77.9,219.2 L79.2,220.1 L81.7,228.3 L82.9,230.5 L82.3,233.8 L83.9,245.1 L86.1,248.5 L87.8,253.1 L91.0,257.9 L89.7,261.4 L89.9,264.6 L91.2,269.5 L94.2,274.4 L95.3,280.5 L95.0,288.4 L93.3,297.5 L93.5,298.6 L65.7,299.0 L64.9,301.7 L65.6,304.8 L66.4,331.8 L63.4,331.4 L61.7,329.4 L57.8,328.1 L53.3,327.6 L52.1,324.8 L49.2,323.7 L45.5,324.4 L43.0,324.0 L39.8,321.1 L40.0,318.0 L37.7,316.3 L35.1,312.9 L33.2,312.0 L31.4,307.8 L30.1,308.1 L29.8,304.7 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.NQ" d="M10.5,407.1 L10.6,405.6 L8.7,401.1 L9.9,399.5 L10.7,394.8 L12.6,392.8 L10.1,390.2 L10.2,387.5 L12.2,387.7 L12.9,383.4 L11.2,379.9 L11.6,376.6 L14.2,377.4 L13.7,375.7 L14.9,373.5 L15.6,369.3 L15.0,363.0 L18.0,360.1 L23.7,357.3 L23.9,353.8 L21.7,351.8 L20.8,348.5 L20.7,344.3 L17.4,336.8 L18.1,331.3 L16.5,328.2 L18.3,324.1 L16.2,318.6 L16.9,315.4 L18.1,315.5 L18.4,311.0 L20.9,309.1 L23.8,309.2 L23.9,306.0 L26.1,303.3 L28.4,303.0 L29.8,304.7 L30.1,308.1 L31.4,307.8 L33.2,312.0 L35.1,312.9 L37.7,316.3 L40.0,318.0 L39.8,321.1 L43.0,324.0 L45.5,324.4 L49.2,323.7 L52.1,324.8 L53.3,327.6 L57.8,328.1 L61.7,329.4 L63.4,331.4 L66.4,331.8 L66.9,355.0 L70.4,360.0 L70.7,361.4 L67.0,362.1 L65.9,361.4 L61.9,364.5 L58.1,368.9 L55.8,372.8 L50.9,375.2 L49.4,377.8 L46.6,380.2 L44.3,380.2 L39.8,383.6 L38.3,393.1 L36.4,395.7 L32.7,396.5 L30.5,395.7 L28.4,397.3 L24.3,398.5 L22.0,401.5 L23.7,404.6 L22.0,407.3 L18.7,408.3 L15.5,407.3 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.LP" d="M66.4,331.8 L65.6,304.8 L64.9,301.7 L65.7,299.0 L93.5,298.6 L119.7,298.6 L119.9,277.6 L139.4,277.9 L149.4,278.1 L148.7,298.8 L146.8,369.1 L145.3,369.0 L141.6,366.4 L137.0,362.2 L129.2,358.8 L123.5,357.8 L118.7,357.6 L114.5,358.3 L110.8,357.0 L109.2,357.8 L104.7,356.2 L100.5,355.7 L97.6,356.1 L94.8,355.4 L93.4,352.4 L86.4,349.3 L84.5,345.4 L78.3,346.4 L75.7,343.0 L73.4,342.1 L73.3,339.0 L75.5,336.3 L74.8,333.9 L73.1,332.5 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.RN" d="M155.1,405.6 L150.2,407.8 L139.4,407.6 L135.0,404.1 L133.2,404.3 L129.4,402.1 L124.3,400.3 L123.7,398.4 L121.9,397.7 L118.1,400.3 L117.2,404.1 L118.9,413.3 L120.0,415.5 L119.3,417.9 L119.8,420.6 L118.9,425.1 L117.8,424.9 L13.4,427.9 L12.9,425.1 L10.4,420.1 L11.5,418.9 L10.4,414.7 L10.5,407.1 L15.5,407.3 L18.7,408.3 L22.0,407.3 L23.7,404.6 L22.0,401.5 L24.3,398.5 L28.4,397.3 L30.5,395.7 L32.7,396.5 L36.4,395.7 L38.3,393.1 L39.8,383.6 L44.3,380.2 L46.6,380.2 L49.4,377.8 L50.9,375.2 L55.8,372.8 L58.1,368.9 L61.9,364.5 L65.9,361.4 L67.0,362.1 L70.7,361.4 L70.4,360.0 L66.9,355.0 L66.4,331.8 L73.1,332.5 L74.8,333.9 L75.5,336.3 L73.3,339.0 L73.4,342.1 L75.7,343.0 L78.3,346.4 L84.5,345.4 L86.4,349.3 L93.4,352.4 L94.8,355.4 L97.6,356.1 L100.5,355.7 L104.7,356.2 L109.2,357.8 L110.8,357.0 L114.5,358.3 L118.7,357.6 L123.5,357.8 L129.2,358.8 L137.0,362.2 L141.6,366.4 L145.3,369.0 L146.8,369.1 L145.9,398.3 L150.2,399.2 L154.2,403.4 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.SL" d="M93.5,298.6 L93.3,297.5 L95.0,288.4 L95.3,280.5 L94.2,274.4 L91.2,269.5 L89.9,264.6 L89.7,261.4 L91.0,257.9 L87.8,253.1 L86.1,248.5 L83.9,245.1 L82.3,233.8 L82.9,230.5 L81.7,228.3 L79.2,220.1 L79.2,212.4 L80.0,211.4 L86.4,212.2 L91.0,211.9 L93.3,212.6 L100.2,212.9 L103.1,211.7 L108.4,212.0 L111.4,212.7 L117.4,216.8 L118.4,221.2 L123.3,220.8 L124.1,226.0 L121.2,237.9 L119.4,239.8 L120.1,255.8 L119.9,277.6 L119.7,298.6 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.CB" d="M149.4,278.1 L139.4,277.9 L119.9,277.6 L120.1,255.8 L119.4,239.8 L121.2,237.9 L124.1,226.0 L123.3,220.8 L118.4,221.2 L117.4,216.8 L111.4,212.7 L108.4,212.0 L108.3,195.4 L112.8,180.9 L115.0,175.4 L119.8,173.8 L123.4,169.9 L123.1,164.3 L124.6,163.2 L135.5,160.5 L139.8,161.5 L139.9,162.7 L144.3,165.4 L150.7,165.7 L152.4,168.2 L172.2,168.8 L173.0,169.4 L175.6,176.9 L174.7,183.2 L179.3,189.2 L173.9,207.4 L172.0,209.4 L172.5,214.7 L171.7,218.5 L174.3,221.0 L175.2,223.9 L176.9,225.6 L178.3,230.2 L179.9,233.4 L179.2,237.0 L176.3,239.3 L158.9,265.4 L150.5,265.1 L149.9,265.8 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.CT" d="M124.6,163.2 L123.1,164.3 L123.4,169.9 L119.8,173.8 L115.0,175.4 L112.0,169.1 L109.0,161.9 L107.9,156.6 L101.8,150.8 L97.9,148.7 L97.8,145.8 L95.3,143.3 L93.2,138.9 L85.9,136.1 L83.7,137.6 L80.7,138.0 L72.4,137.7 L70.2,138.7 L68.5,136.0 L68.1,133.3 L65.3,134.0 L58.4,130.4 L58.6,125.5 L50.8,126.6 L45.5,126.3 L47.6,119.5 L49.1,118.3 L51.4,112.3 L55.5,113.3 L56.7,111.4 L60.2,110.7 L60.4,107.0 L55.5,100.4 L55.3,95.2 L58.2,92.5 L56.5,83.7 L55.3,81.7 L54.4,77.0 L56.3,71.1 L69.6,73.5 L92.6,73.0 L93.5,73.2 L95.1,77.4 L94.3,80.6 L90.1,81.5 L88.7,82.6 L89.2,86.2 L92.3,90.4 L94.0,93.8 L96.1,96.3 L97.3,96.0 L99.8,91.9 L103.1,93.7 L101.1,98.8 L106.8,103.5 L106.5,107.6 L100.4,116.1 L104.4,117.6 L105.4,123.1 L107.4,126.3 L109.7,126.7 L110.3,129.2 L112.3,131.5 L113.4,129.7 L116.5,127.5 L119.6,128.5 L121.2,136.2 L121.2,140.5 L119.3,144.0 L120.7,145.0 L121.8,157.6 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.LR" d="M108.4,212.0 L103.1,211.7 L100.2,212.9 L93.3,212.6 L91.0,211.9 L89.1,209.3 L88.5,206.7 L85.2,204.5 L84.2,201.0 L84.9,195.2 L83.8,193.7 L84.5,191.5 L82.6,187.8 L75.5,180.6 L74.2,177.8 L68.8,173.5 L65.6,170.0 L61.4,166.4 L54.5,164.6 L49.4,165.4 L48.7,162.7 L49.9,158.5 L48.7,154.6 L50.1,151.8 L46.6,147.5 L45.4,144.2 L42.1,141.4 L36.2,139.8 L40.4,135.7 L42.5,131.2 L44.8,129.5 L45.5,126.3 L50.8,126.6 L58.6,125.5 L58.4,130.4 L65.3,134.0 L68.1,133.3 L68.5,136.0 L70.2,138.7 L72.4,137.7 L80.7,138.0 L83.7,137.6 L85.9,136.1 L93.2,138.9 L95.3,143.3 L97.8,145.8 L97.9,148.7 L101.8,150.8 L107.9,156.6 L109.0,161.9 L112.0,169.1 L115.0,175.4 L112.8,180.9 L108.3,195.4 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.SA" d="M103.1,93.7 L99.8,91.9 L97.3,96.0 L96.1,96.3 L94.0,93.8 L92.3,90.4 L89.2,86.2 L88.7,82.6 L90.1,81.5 L94.3,80.6 L95.1,77.4 L93.5,73.2 L92.6,73.0 L69.6,73.5 L56.3,71.1 L58.6,70.6 L56.6,65.7 L54.7,63.0 L56.0,59.6 L60.9,54.8 L77.8,47.1 L79.9,40.8 L83.0,42.8 L87.5,47.7 L91.1,50.6 L94.4,51.3 L97.3,47.2 L97.5,40.6 L96.3,37.1 L97.2,33.1 L100.8,34.2 L104.3,36.8 L103.6,41.7 L104.1,45.1 L108.7,48.0 L108.7,49.6 L112.0,54.8 L118.0,56.9 L119.9,55.9 L122.7,58.3 L125.2,58.9 L126.8,56.1 L130.5,59.4 L132.8,56.6 L136.5,55.2 L139.5,50.4 L139.1,36.3 L136.1,36.1 L134.3,38.5 L130.0,35.0 L125.8,35.7 L124.2,31.7 L122.6,30.7 L122.7,25.5 L119.8,25.0 L118.3,22.1 L118.3,17.6 L116.8,16.7 L118.9,11.2 L119.9,6.5 L123.2,6.4 L131.7,8.9 L132.0,11.7 L134.7,15.9 L134.2,18.0 L135.8,19.8 L136.3,22.7 L138.2,15.9 L140.0,13.8 L144.3,4.8 L148.3,5.7 L150.3,4.7 L166.7,5.1 L166.9,7.4 L170.2,10.4 L169.9,11.3 L175.5,15.1 L175.0,37.9 L174.7,49.8 L174.6,55.7 L153.6,81.7 L143.6,81.4 L138.1,80.3 L134.0,89.1 L132.8,93.1 L127.4,92.9 L123.6,94.1 L118.0,91.8 L117.1,90.0 L114.7,90.9 L110.4,89.9 L109.5,94.6 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.SE" d="M124.6,163.2 L121.8,157.6 L120.7,145.0 L119.3,144.0 L121.2,140.5 L121.2,136.2 L119.6,128.5 L121.5,128.0 L122.8,125.8 L121.5,122.5 L123.4,120.2 L121.6,119.3 L125.1,115.9 L128.0,109.2 L128.9,105.7 L130.7,102.9 L132.3,102.9 L132.0,97.9 L132.8,93.1 L134.0,89.1 L138.1,80.3 L143.6,81.4 L153.6,81.7 L184.9,82.5 L185.5,84.3 L185.4,95.2 L184.1,131.8 L180.5,151.0 L175.6,176.9 L173.0,169.4 L172.2,168.8 L152.4,168.2 L150.7,165.7 L144.3,165.4 L139.9,162.7 L139.8,161.5 L135.5,160.5 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.TM" d="M119.6,128.5 L116.5,127.5 L113.4,129.7 L112.3,131.5 L110.3,129.2 L109.7,126.7 L107.4,126.3 L105.4,123.1 L104.4,117.6 L100.4,116.1 L106.5,107.6 L106.8,103.5 L101.1,98.8 L103.1,93.7 L109.5,94.6 L110.4,89.9 L114.7,90.9 L117.1,90.0 L118.0,91.8 L123.6,94.1 L127.4,92.9 L132.8,93.1 L132.0,97.9 L132.3,102.9 L130.7,102.9 L128.9,105.7 L128.0,109.2 L125.1,115.9 L121.6,119.3 L123.4,120.2 L121.5,122.5 L122.8,125.8 L121.5,128.0 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.CC" d="M153.6,81.7 L174.6,55.7 L174.7,49.8 L180.2,51.8 L183.0,54.2 L185.4,54.8 L187.5,57.7 L189.3,58.0 L191.5,60.8 L195.1,61.5 L197.3,63.2 L198.1,66.5 L206.6,72.9 L209.3,73.9 L211.8,77.3 L215.0,83.8 L217.7,84.6 L220.9,87.4 L224.3,91.6 L224.3,93.7 L229.1,95.5 L229.5,97.7 L231.4,99.0 L234.0,98.1 L237.6,100.5 L239.2,102.7 L244.4,106.9 L248.4,111.3 L246.3,112.1 L245.2,114.8 L242.4,116.7 L243.1,120.1 L237.6,123.3 L238.5,129.5 L237.3,134.3 L202.2,132.5 L184.1,131.8 L185.4,95.2 L185.5,84.3 L184.9,82.5 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.FM" d="M174.7,49.8 L175.0,37.9 L175.5,15.1 L177.6,17.0 L178.7,20.4 L182.7,27.2 L184.8,28.5 L186.7,31.5 L189.4,32.7 L191.5,35.4 L195.2,36.9 L198.8,39.7 L200.6,44.0 L203.9,45.5 L208.5,46.4 L208.8,47.2 L213.6,48.9 L219.3,48.9 L230.1,56.8 L232.2,59.7 L238.6,63.3 L242.2,66.3 L248.6,68.2 L251.5,71.4 L253.3,70.4 L257.7,73.5 L259.5,73.7 L262.0,76.0 L265.4,82.1 L264.0,85.3 L261.4,86.4 L260.2,89.7 L258.1,92.5 L258.6,93.4 L254.4,95.6 L252.6,98.5 L250.5,108.8 L248.4,111.3 L244.4,106.9 L239.2,102.7 L237.6,100.5 L234.0,98.1 L231.4,99.0 L229.5,97.7 L229.1,95.5 L224.3,93.7 L224.3,91.6 L220.9,87.4 L217.7,84.6 L215.0,83.8 L211.8,77.3 L209.3,73.9 L206.6,72.9 L198.1,66.5 L197.3,63.2 L195.1,61.5 L191.5,60.8 L189.3,58.0 L187.5,57.7 L185.4,54.8 L183.0,54.2 L180.2,51.8 Z" fill="#0098ce" class="fill-[#0098ce] transition-colors duration-200" />
+    <path id="map-AR.CN" d="M237.3,134.3 L238.5,129.5 L237.6,123.3 L243.1,120.1 L244.9,119.4 L254.1,119.6 L260.2,121.6 L263.1,123.3 L266.9,123.7 L269.7,125.5 L275.0,124.4 L277.4,126.5 L281.7,125.7 L284.9,128.6 L286.9,124.7 L289.9,123.0 L292.9,124.0 L291.7,126.4 L294.0,132.2 L294.3,136.3 L295.9,139.9 L297.9,141.7 L295.0,143.4 L296.8,145.5 L295.9,147.2 L293.4,145.7 L292.2,148.0 L290.0,148.6 L289.6,150.5 L286.3,153.6 L284.4,154.2 L283.9,156.3 L281.5,159.7 L277.5,161.7 L276.2,164.9 L267.7,173.5 L264.0,174.6 L263.1,178.0 L259.5,181.2 L256.9,182.1 L256.5,184.9 L252.7,188.0 L251.9,190.1 L253.0,193.6 L250.0,190.3 L248.8,186.3 L245.5,182.1 L238.9,180.0 L234.3,181.2 L231.9,180.6 L227.4,183.3 L224.8,182.3 L219.7,182.7 L221.3,175.9 L220.2,173.0 L221.9,167.6 L222.2,163.3 L223.8,159.1 L226.7,157.9 L229.9,155.5 L230.1,153.4 L232.1,148.0 L233.1,142.5 L233.1,137.4 L235.6,136.5 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.ER" d="M219.7,182.7 L224.8,182.3 L227.4,183.3 L231.9,180.6 L234.3,181.2 L238.9,180.0 L245.5,182.1 L248.8,186.3 L250.0,190.3 L253.0,193.6 L252.8,196.9 L250.8,197.6 L251.7,200.1 L250.5,203.9 L247.1,208.6 L248.5,210.4 L246.8,215.7 L244.8,216.3 L244.8,220.9 L244.0,222.7 L245.3,226.2 L242.9,229.8 L243.3,241.7 L241.6,242.6 L239.1,242.0 L238.2,246.6 L236.0,249.7 L235.2,254.6 L236.4,258.0 L236.5,261.5 L232.4,261.7 L226.5,257.1 L224.2,256.9 L222.6,254.6 L220.3,254.7 L218.1,252.8 L216.6,253.2 L213.7,251.6 L212.3,249.7 L207.9,246.7 L204.9,243.6 L201.5,240.6 L198.6,234.6 L197.3,228.1 L198.7,220.4 L199.6,217.8 L198.7,215.6 L200.3,210.8 L204.6,210.1 L210.7,203.7 L219.3,191.1 L220.4,185.1 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.CH" d="M21.1,512.0 L20.7,509.6 L18.5,506.7 L18.8,503.2 L22.2,501.8 L22.3,499.4 L25.1,496.9 L20.5,490.4 L17.9,489.7 L16.0,490.1 L13.1,489.4 L13.3,486.2 L16.2,486.8 L21.5,485.4 L24.0,486.5 L25.4,485.2 L25.3,483.4 L26.9,480.5 L25.4,478.5 L21.9,478.1 L16.1,478.6 L16.1,474.8 L15.1,472.4 L16.5,471.4 L17.9,468.4 L15.4,464.3 L16.9,463.0 L16.4,461.4 L14.1,460.4 L13.0,458.8 L13.3,455.9 L15.6,455.2 L15.6,452.9 L11.3,451.8 L9.0,449.3 L9.4,446.5 L8.4,440.8 L9.9,438.5 L8.3,433.8 L9.4,431.2 L10.9,431.6 L14.1,429.6 L13.4,427.9 L117.8,424.9 L118.9,425.1 L122.0,429.0 L127.7,430.3 L125.9,433.9 L128.3,434.5 L133.3,434.3 L134.5,433.0 L134.3,430.9 L130.7,430.5 L138.4,426.7 L140.0,428.1 L141.7,432.5 L141.7,437.9 L141.0,441.2 L139.2,442.7 L133.4,443.8 L131.2,441.4 L132.1,438.7 L128.4,435.7 L125.7,435.9 L120.5,438.7 L119.6,441.5 L125.0,444.5 L128.3,445.6 L130.1,445.1 L128.0,447.6 L123.1,449.1 L119.0,452.3 L118.9,453.9 L114.3,460.1 L114.5,463.5 L116.0,469.9 L114.6,472.1 L115.9,474.7 L114.2,476.7 L113.2,479.5 L111.0,480.0 L108.8,482.0 L108.3,485.3 L110.5,485.8 L109.8,489.4 L107.8,488.5 L104.6,488.9 L101.1,487.9 L95.3,491.0 L96.3,492.6 L91.1,493.1 L88.3,495.5 L84.4,501.1 L83.8,504.9 L82.6,505.6 L80.8,509.3 L69.3,509.6 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.SF" d="M158.9,265.4 L176.3,239.3 L179.2,237.0 L179.9,233.4 L178.3,230.2 L176.9,225.6 L175.2,223.9 L174.3,221.0 L171.7,218.5 L172.5,214.7 L172.0,209.4 L173.9,207.4 L179.3,189.2 L174.7,183.2 L175.6,176.9 L180.5,151.0 L184.1,131.8 L202.2,132.5 L237.3,134.3 L235.6,136.5 L233.1,137.4 L233.1,142.5 L232.1,148.0 L230.1,153.4 L229.9,155.5 L226.7,157.9 L223.8,159.1 L222.2,163.3 L221.9,167.6 L220.2,173.0 L221.3,175.9 L219.7,182.7 L220.4,185.1 L219.3,191.1 L210.7,203.7 L204.6,210.1 L200.3,210.8 L198.7,215.6 L199.6,217.8 L198.7,220.4 L197.3,228.1 L198.6,234.6 L201.5,240.6 L204.9,243.6 L205.2,244.7 L202.6,247.9 L201.5,250.9 L200.1,251.5 L197.8,250.0 L193.7,249.5 L192.7,251.9 L178.9,266.0 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.MN" d="M292.9,124.0 L296.7,126.7 L300.0,124.5 L300.2,121.1 L302.9,119.8 L303.6,117.7 L306.6,116.6 L309.3,117.3 L309.7,115.4 L312.7,114.0 L314.3,111.4 L316.4,111.3 L316.7,108.8 L318.5,107.1 L320.2,102.0 L320.2,97.4 L321.9,93.9 L321.1,91.2 L322.1,88.9 L324.7,90.5 L325.9,89.5 L331.8,88.1 L331.3,89.2 L335.4,91.2 L336.4,95.2 L336.3,98.7 L338.8,104.2 L337.4,107.5 L336.3,114.2 L336.6,118.1 L333.5,124.0 L331.2,123.6 L328.5,126.1 L327.0,125.1 L324.5,128.8 L323.4,128.0 L319.7,129.6 L312.6,131.9 L312.1,134.3 L308.8,134.9 L309.7,136.3 L304.2,137.4 L301.5,140.6 L297.9,141.7 L295.9,139.9 L294.3,136.3 L294.0,132.2 L291.7,126.4 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.DF" d="M235.2,272.3 L236.8,273.5 L237.8,275.4 L235.3,277.7 L233.7,276.2 L234.0,273.2 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.SC" d="M80.8,509.3 L80.3,512.8 L82.0,518.5 L83.4,521.2 L87.7,524.1 L92.7,530.4 L101.2,532.1 L104.4,531.6 L107.7,534.5 L107.9,540.9 L106.3,545.8 L106.2,548.7 L104.5,552.2 L105.4,552.9 L102.2,554.1 L99.8,556.6 L99.3,558.7 L94.9,560.4 L92.0,563.7 L88.5,565.6 L87.4,568.6 L84.5,570.5 L82.5,572.9 L81.8,576.3 L79.1,580.9 L80.3,580.8 L81.5,577.8 L80.4,589.1 L79.1,592.8 L75.9,595.6 L72.5,596.4 L69.8,592.7 L67.8,588.9 L68.7,593.4 L72.2,597.1 L71.1,598.2 L65.2,601.1 L62.7,606.1 L61.9,610.0 L62.2,613.4 L59.0,616.6 L61.9,615.0 L63.6,622.1 L65.1,625.9 L64.9,627.4 L63.1,628.1 L60.9,627.3 L56.6,628.9 L60.7,628.0 L65.6,628.9 L69.1,636.3 L73.5,642.6 L67.6,641.4 L62.4,639.4 L58.8,639.5 L52.6,637.2 L27.0,638.5 L26.3,636.0 L24.7,634.2 L21.8,632.8 L20.6,630.4 L19.3,629.9 L20.5,628.2 L21.2,622.9 L19.2,620.1 L20.4,618.7 L20.5,614.6 L19.3,613.1 L19.6,610.7 L16.8,609.9 L15.4,611.4 L13.2,610.6 L9.2,614.2 L8.1,613.9 L6.6,609.9 L5.1,603.9 L2.1,601.5 L2.5,599.0 L1.0,597.2 L2.1,593.4 L0.0,588.8 L1.3,583.9 L5.6,583.4 L4.9,582.1 L6.8,576.6 L10.4,574.7 L12.3,571.9 L11.9,564.7 L15.6,561.9 L14.5,556.4 L11.4,553.4 L13.6,546.6 L13.6,542.8 L15.8,542.3 L17.6,539.2 L19.8,536.9 L17.6,534.4 L18.2,529.2 L21.6,526.6 L21.4,523.0 L19.8,517.3 L17.5,515.5 L19.5,514.5 L21.1,512.0 L69.3,509.6 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+    <path id="map-AR.JY" d="M79.9,40.8 L84.4,25.4 L80.8,21.7 L83.9,18.2 L83.9,15.4 L88.8,13.4 L89.7,9.1 L96.7,7.0 L98.3,5.4 L99.4,0.0 L102.2,0.8 L103.2,2.6 L105.4,3.2 L109.1,6.8 L112.3,6.2 L119.9,6.5 L118.9,11.2 L116.8,16.7 L118.3,17.6 L118.3,22.1 L119.8,25.0 L122.7,25.5 L122.6,30.7 L124.2,31.7 L125.8,35.7 L130.0,35.0 L134.3,38.5 L136.1,36.1 L139.1,36.3 L139.5,50.4 L136.5,55.2 L132.8,56.6 L130.5,59.4 L126.8,56.1 L125.2,58.9 L122.7,58.3 L119.9,55.9 L118.0,56.9 L112.0,54.8 L108.7,49.6 L108.7,48.0 L104.1,45.1 L103.6,41.7 L104.3,36.8 L100.8,34.2 L97.2,33.1 L96.3,37.1 L97.5,40.6 L97.3,47.2 L94.4,51.3 L91.1,50.6 L87.5,47.7 L83.0,42.8 Z" fill="#E2E8F0" class="hover:fill-blue-100 transition-colors duration-200" />
+  </g>
+
+  <!-- Connection / Pointer Lines -->
+  <!-- Line from Formosa Capital to bubble -->
+  <line x1="258" y1="82" x2="295" y2="78" stroke="#0098ce" stroke-width="2" stroke-dasharray="3,3" />
+  
+  <!-- Line from Formosa Interior to bubble -->
+  <line x1="205" y1="52" x2="195" y2="40" stroke="#0d9488" stroke-width="2" stroke-dasharray="3,3" />
+
+  <!-- Indicator Bubble: Interior de Formosa (1.274) -->
+  <g transform="translate(190, 36)" filter="url(#bubble-shadow)" class="cursor-pointer">
+    <circle cx="0" cy="0" r="26" fill="#0d9488" class="animate-pulse" opacity="0.3" />
+    <circle cx="0" cy="0" r="24" fill="#0f766e" stroke="#ffffff" stroke-width="2.5" />
+    <text x="0" y="-3" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle" font-family="'Inter', sans-serif">1.274</text>
+    <text x="0" y="9" font-size="6.5" font-weight="600" fill="#ccfbf1" text-anchor="middle" font-family="'Inter', sans-serif">Interior</text>
+  </g>
+
+  <!-- Indicator Bubble: Formosa Capital (2.751) -->
+  <g transform="translate(305, 82)" filter="url(#bubble-shadow)" class="cursor-pointer">
+    <circle cx="0" cy="0" r="34" fill="#0098ce" class="animate-pulse" opacity="0.3" />
+    <circle cx="0" cy="0" r="32" fill="#0098ce" stroke="#ffffff" stroke-width="2.5" />
+    <text x="0" y="-3" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle" font-family="'Inter', sans-serif">2.751</text>
+    <text x="0" y="11" font-size="7.5" font-weight="600" fill="#e0f2fe" text-anchor="middle" font-family="'Inter', sans-serif">Capital</text>
+  </g>
+
+  <!-- Indicator Bubble: Otras Provincias (173) -->
+  <g transform="translate(180, 260)" filter="url(#bubble-shadow)" class="cursor-pointer">
+    <circle cx="0" cy="0" r="16" fill="#be185d" stroke="#ffffff" stroke-width="2" />
+    <text x="0" y="3" font-size="9" font-weight="bold" fill="#ffffff" text-anchor="middle" font-family="'Inter', sans-serif">173</text>
+  </g>
+</svg>
+                            </div>
+
+                            <!-- Origin Distribution Bars -->
+                            <div class="md:col-span-7 space-y-4">
+                                <h4 class="text-sm font-bold text-slate-200 uppercase tracking-wider mb-3" data-key="distribution-origin-title">Distribución por Origen</h4>
+
+                                <!-- Formosa Capital -->
+                                <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700/50">
+                                    <div class="flex justify-between items-center text-xs mb-1.5">
+                                        <span class="font-semibold text-cyan-300 flex items-center gap-1.5">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-[#0098ce]"></span>
+                                            <span data-key="origin-capital">Formosa Capital</span>
+                                        </span>
+                                        <span class="font-extrabold text-white text-sm">2.751 <span class="text-[11px] font-normal text-slate-400">(65,2%)</span></span>
+                                    </div>
+                                    <div class="w-full bg-slate-700/50 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-[#0098ce] h-full rounded-full" style="width: 65.2%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Interior de Formosa -->
+                                <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700/50">
+                                    <div class="flex justify-between items-center text-xs mb-1.5">
+                                        <span class="font-semibold text-teal-300 flex items-center gap-1.5">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-[#0d9488]"></span>
+                                            <span data-key="origin-interior">Interior de Formosa</span>
+                                        </span>
+                                        <span class="font-extrabold text-white text-sm">1.274 <span class="text-[11px] font-normal text-slate-400">(30,2%)</span></span>
+                                    </div>
+                                    <div class="w-full bg-slate-700/50 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-[#0d9488] h-full rounded-full" style="width: 30.2%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Otras provincias -->
+                                <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700/50">
+                                    <div class="flex justify-between items-center text-xs mb-1.5">
+                                        <span class="font-semibold text-pink-300 flex items-center gap-1.5">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-[#be185d]"></span>
+                                            <span data-key="origin-provinces">Otras Provincias (NEA y país)</span>
+                                        </span>
+                                        <span class="font-extrabold text-white text-sm">173 <span class="text-[11px] font-normal text-slate-400">(4,1%)</span></span>
+                                    </div>
+                                    <div class="w-full bg-slate-700/50 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-[#be185d] h-full rounded-full" style="width: 4.1%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Paraguay -->
+                                <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700/50">
+                                    <div class="flex justify-between items-center text-xs mb-1.5">
+                                        <span class="font-semibold text-amber-300 flex items-center gap-1.5">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-[#f59e0b]"></span>
+                                            <span data-key="origin-paraguay">Paraguay</span>
+                                        </span>
+                                        <span class="font-extrabold text-white text-sm">17 <span class="text-[11px] font-normal text-slate-400">(0,4%)</span></span>
+                                    </div>
+                                    <div class="w-full bg-slate-700/50 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-[#f59e0b] h-full rounded-full" style="width: 1%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lectura Gerencial Box -->
+                    <div class="bg-gradient-to-r from-blue-900/40 via-cyan-950/30 to-slate-900/60 p-4 rounded-2xl border border-cyan-500/30 mt-4">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex-shrink-0 flex items-center justify-center font-bold">
+                                <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div class="text-xs leading-relaxed">
+                                <h5 class="font-bold text-white mb-0.5" data-key="manager-reading-title">Lectura Gerencial</h5>
+                                <p class="text-slate-300" data-key="manager-reading-desc">
+                                    El <strong class="text-cyan-400">95,5% de los pacientes</strong> procede de la provincia de Formosa (con 1.274 personas aportadas por el interior provincial). Más de 190 pacientes provienen de provincias vecinas o de Paraguay, consolidando el perfil de referencia estratégica regional del centro.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Equipo Profesional: "Diversidad de Saberes" Grid -->
+            <div class="bg-slate-800/90 backdrop-blur-md rounded-3xl p-6 md:p-8 border border-slate-700 shadow-xl">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 pb-4 border-b border-slate-700/80 gap-2">
+                    <div>
+                        <span class="text-xs font-bold text-cyan-400 uppercase tracking-widest" data-key="team-badge">Nuestro Equipo 2026</span>
+                        <h3 class="text-2xl font-bold text-white" data-key="team-diversity-title">Diversidad de Saberes</h3>
+                        <p class="text-xs text-slate-400 mt-1" data-key="team-diversity-desc">Perfiles que se complementan en el trabajo cotidiano (77 profesionales en total)</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <!-- Técnicos -->
+                    <div class="bg-slate-900/70 p-5 rounded-2xl border border-slate-700/60 text-center hover:border-cyan-500/40 transition">
+                        <div class="text-3xl font-extrabold text-cyan-400 mb-1">22</div>
+                        <div class="text-xs font-bold text-white mb-1" data-key="team-technicians">Técnicos</div>
+                        <div class="text-[10px] text-slate-400" data-key="team-technicians-sub">Operación de equipos y radioterapia</div>
+                    </div>
+
+                    <!-- Licenciados -->
+                    <div class="bg-slate-900/70 p-5 rounded-2xl border border-slate-700/60 text-center hover:border-cyan-500/40 transition">
+                        <div class="text-3xl font-extrabold text-blue-400 mb-1">21</div>
+                        <div class="text-xs font-bold text-white mb-1" data-key="team-graduates">Licenciados</div>
+                        <div class="text-[10px] text-slate-400" data-key="team-graduates-sub">Bioimágenes, enfermería y física</div>
+                    </div>
+
+                    <!-- Ingenieros -->
+                    <div class="bg-slate-900/70 p-5 rounded-2xl border border-slate-700/60 text-center hover:border-cyan-500/40 transition">
+                        <div class="text-3xl font-extrabold text-teal-400 mb-1">10</div>
+                        <div class="text-xs font-bold text-white mb-1" data-key="team-engineers">Ingenieros</div>
+                        <div class="text-[10px] text-slate-400" data-key="team-engineers-sub">Bioingeniería y electromecánica</div>
+                    </div>
+
+                    <!-- Médicos -->
+                    <div class="bg-slate-900/70 p-5 rounded-2xl border border-slate-700/60 text-center hover:border-cyan-500/40 transition">
+                        <div class="text-3xl font-extrabold text-indigo-400 mb-1">8</div>
+                        <div class="text-xs font-bold text-white mb-1" data-key="team-doctors">Médicos</div>
+                        <div class="text-[10px] text-slate-400" data-key="team-doctors-sub">Radioterapeutas y especialistas</div>
+                    </div>
+
+                    <!-- Estudiantes -->
+                    <div class="bg-slate-900/70 p-5 rounded-2xl border border-slate-700/60 text-center hover:border-cyan-500/40 transition">
+                        <div class="text-3xl font-extrabold text-amber-400 mb-1">10</div>
+                        <div class="text-xs font-bold text-white mb-1" data-key="team-students">Estudiantes</div>
+                        <div class="text-[10px] text-slate-400" data-key="team-students-sub">Prácticas y formación continua</div>
+                    </div>
+
+                    <!-- Otros perfiles -->
+                    <div class="bg-slate-900/70 p-5 rounded-2xl border border-slate-700/60 text-center hover:border-cyan-500/40 transition">
+                        <div class="text-3xl font-extrabold text-pink-400 mb-1">6</div>
+                        <div class="text-xs font-bold text-white mb-1" data-key="team-others">Otros Perfiles</div>
+                        <div class="text-[10px] text-slate-400" data-key="team-others-sub">Legal, contable y comunicación</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -667,11 +1234,11 @@
         </div>
     </section>
 
-    <!-- "Ciclotrón" Section (new, separate section) -->
+    <!-- "Ciclotrón y Radiofarmacia" Section (new, separate section) -->
     <section id="ciclotron" class="py-20 bg-white">
         <div class="container mx-auto px-6">
             <div class="text-center">
-                <h2 class="section-title" data-key="section-cyclotron-title">Ciclotrón</h2>
+                <h2 class="section-title" data-key="section-cyclotron-title">Ciclotrón y Radiofarmacia</h2>
                 <p class="text-lg font-semibold text-gray-700 mb-4" data-key="equipment-cyclotron-subtitle">Healthcare
                     PETracer 810</p>
             </div>
@@ -696,29 +1263,6 @@
                     class="w-full h-[360px] md:h-[420px] rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-gray-100">
                     <img src="/media/ciclotron.jpg" alt="Ciclotrón"
                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- "Representantes" Section -->
-    <section id="representantes" class="py-20 bg-gray-100">
-        <div class="container mx-auto px-6">
-            <div class="text-center">
-                <h2 class="section-title" data-key="section-reps-title">Representantes</h2>
-                <p class="text-lg text-gray-600 mb-12" data-key="reps-intro">Conoce a nuestro equipo de representantes,
-                    dedicados a la excelencia.</p>
-            </div>
-
-            <div class="max-w-md mx-auto">
-                <!-- Martin Mutuberria Card -->
-                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200 text-center service-card">
-                    <img src="/media/mmutuberria.png" alt="Martín Mutuberria"
-                        class="rounded-full w-48 h-48 mx-auto mb-4">
-                    <h3 class="text-xl font-bold text-gray-800 mb-1" data-key="rep-martin-name">Martín Mutuberria</h3>
-                    <p class="text-secondary font-semibold" data-key="rep-martin-role">CEO</p>
-                    <a href="mailto:martin.m@cemenurnk.org"
-                        class="text-gray-500 hover:text-secondary transition duration-300">mmutuberria@cemenurnk.org.ar</a>
                 </div>
             </div>
         </div>
@@ -777,19 +1321,90 @@
 
     <script>
         const translations = {
+            'nav-stats': {"es":"En Cifras","zh":"数据概览","en":"In Figures","de":"In Zahlen"},
+            'cifras-badge': {"es":"Impacto y Trayectoria","zh":"影响力与历程","en":"Impact and Trajectory","de":"Wirkung und Entwicklung"},
+            'cifras-title': {"es":"CEMENURNK en Cifras","zh":"CEMENURNK 数据概览","en":"CEMENURNK in Figures","de":"CEMENURNK in Zahlen"},
+            'cifras-subtitle': {"es":"Indicadores consolidados de actividad asistencial, equipamiento tecnológico, talento humano y alcance regional desde el inicio de nuestras actividades.","zh":"自投入运营以来，在医疗救治、先进设备、专业人才团队及区域辐射力方面的综合统计指标。","en":"Consolidated indicators of healthcare activity, advanced technology, human talent, and regional reach since inception.","de":"Konsolidierte Kennzahlen zu Versorgungsleistungen, technologischer Ausstattung, Fachpersonal und regionaler Reichweite seit Betriebsbeginn."},
+            'kpi-year-title': {"es":"Año de Inicio","zh":"成立年份","en":"Inception Year","de":"Gründungsjahr"},
+            'kpi-year-desc': {"es":"Puesta en marcha del centro","zh":"中心正式投入运营","en":"Center commissioning","de":"Inbetriebnahme des Zentrums"},
+            'kpi-patients-title': {"es":"Pacientes Únicos","zh":"独立就诊患者","en":"Unique Patients","de":"Eindeutige Patienten"},
+            'kpi-patients-desc': {"es":"Sin duplicación institucional","zh":"全院各科去重统计","en":"Unduplicated institutional total","de":"Bereinigte Gesamtzahl"},
+            'kpi-sessions-title': {"es":"Sesiones de RT","zh":"放疗总次数","en":"RT Sessions","de":"RT-Sitzungen"},
+            'kpi-sessions-desc': {"es":"Teleterapia y braquiterapia","zh":"远距放疗与近距离放疗","en":"Teletherapy & brachytherapy","de":"Teletherapie und Brachytherapie"},
+            'kpi-studies-title': {"es":"Estudios Dx","zh":"诊断学检查","en":"Diagnostic Studies","de":"Diagnostische Studien"},
+            'kpi-studies-desc': {"es":"4 servicios diagnósticos","zh":"涵盖4大影像与诊疗科室","en":"4 diagnostic services","de":"4 diagnostische Fachbereiche"},
+            'kpi-team-title': {"es":"Profesionales","zh":"专业人才","en":"Professionals","de":"Fachkräfte"},
+            'kpi-team-desc': {"es":"Diversidad interdisciplinaria","zh":"跨学科多元人才梯队","en":"Interdisciplinary diversity","de":"Interdisziplinäre Vielfalt"},
+            'kpi-infra-title': {"es":"Superficie","zh":"建筑面积","en":"Infrastructure","de":"Gebäudefläche"},
+            'kpi-infra-desc': {"es":"Instalaciones de alta tecnología","zh":"高精尖医疗核技术园区","en":"State-of-the-art facilities","de":"Modernste Einrichtungen"},
+            'chart-service-title': {"es":"Pacientes Atendidos por Servicio","zh":"各科室收治患者分布","en":"Patients Served by Specialty","de":"Behandelte Patienten nach Fachbereich"},
+            'chart-service-desc': {"es":"Alcance asistencial acumulado por especialidad médica","zh":"各临床与辅助科室累计就医人数","en":"Cumulative healthcare reach across medical services","de":"Kumulierte Versorgungsreichweite nach medizinischen Diensten"},
+            'service-legend-imaging': {"es":"Diagnóstico por Imágenes","zh":"医学影像诊断","en":"Diagnostic Imaging","de":"Bildgebende Diagnostik"},
+            'service-legend-radiotherapy': {"es":"Radioterapia","zh":"放射治疗","en":"Radiotherapy","de":"Strahlentherapie"},
+            'service-legend-wellbeing': {"es":"Bienestar y Calidad","zh":"身心健康与营养支持","en":"Well-being & Quality of Life","de":"Wohlbefinden & Lebensqualität"},
+            'service-legend-oncology': {"es":"Oncología","zh":"肿瘤综合治疗","en":"Oncology","de":"Onkologie"},
+            'practices-title': {"es":"Prácticas y Prestaciones Acumuladas","zh":"累计开展医疗与治疗实践","en":"Cumulative Practices and Procedures","de":"Kumulierte medizinische Leistungen"},
+            'practices-desc': {"es":"Volumen integral de tratamientos y atenciones aplicadas","zh":"各类诊疗方案、放疗与身心关怀的整体实施总量","en":"Comprehensive volume of treatments and care delivered","de":"Gesamtes Volumen an durchgeführten Behandlungen und Betreuungen"},
+            'pract-rt-sessions': {"es":"Sesiones de Radioterapia (Teleterapia y Braquiterapia)","zh":"放疗照射治疗（远距与后装近距）","en":"Radiotherapy Sessions (Teletherapy & Brachytherapy)","de":"Strahlentherapie-Sitzungen (Teletherapie und Brachytherapie)"},
+            'pract-wellbeing': {"es":"Atenciones de Bienestar (Nutrición y Psicología)","zh":"身心健康关怀服务（心理咨询与营养指导）","en":"Well-being Consultations (Nutrition & Psychology)","de":"Wohlbefinden-Betreuungen (Ernährung & Psychologie)"},
+            'pract-dx-studies': {"es":"Estudios y Procedimientos Diagnósticos (4 servicios)","zh":"诊断性检查及流程（4个诊断科室）","en":"Diagnostic Studies & Procedures (4 services)","de":"Diagnostische Studien & Verfahren (4 Bereiche)"},
+            'pract-rt-treatments': {"es":"Tratamientos de Radioterapia (3D, VMAT, SBRT, Bq)","zh":"放疗综合疗程（3D、VMAT、SBRT、妇科与皮肤近距离放疗）","en":"Radiotherapy Treatment Courses (3D, VMAT, SBRT, Bq)","de":"Strahlentherapie-Behandlungen (3D, VMAT, SBRT, Bq)"},
+            'pract-onco-apps': {"es":"Aplicaciones Oncológicas (Quimioterapia, Inmunoterapia, Hidratación)","zh":"肿瘤化疗给药及支持（化疗、免疫疗法与补液支持）","en":"Oncology Applications (Chemotherapy, Immunotherapy, Hydration)","de":"Onkologische Anwendungen (Chemo-, Immuntherapie, Hydratation)"},
+            'map-origin-title': {"es":"Procedencia de los Pacientes","zh":"患者来源地理分布","en":"Geographic Origin of Patients","de":"Geografische Herkunft der Patienten"},
+            'map-origin-desc': {"es":"Distribución geográfica acumulada (4.216 pacientes únicos)","zh":"累计地理分布分析（共 4.216 名独立患者）","en":"Cumulative geographic distribution (4,216 unique patients)","de":"Kumulierte geografische Verteilung (4.216 eindeutige Patienten)"},
+            'distribution-origin-title': {"es":"Distribución por Origen","zh":"来源细分","en":"Origin Breakdown","de":"Aufschlüsselung nach Herkunft"},
+            'origin-capital': {"es":"Formosa Capital","zh":"福尔摩沙省会","en":"Formosa Capital","de":"Formosa Hauptstadt"},
+            'origin-interior': {"es":"Interior de Formosa","zh":"福尔摩沙省内陆各市县","en":"Formosa Interior","de":"Inland von Formosa"},
+            'origin-provinces': {"es":"Otras Provincias (NEA y país)","zh":"阿根廷东北部及其他各省","en":"Other Provinces (NEA & Argentina)","de":"Andere Provinzen (NEA & Argentinien)"},
+            'origin-paraguay': {"es":"Paraguay","zh":"巴拉圭","en":"Paraguay","de":"Paraguay"},
+            'manager-reading-title': {"es":"Lectura Gerencial","zh":"管理洞察与战略分析","en":"Management Insights","de":"Management-Einschätzung"},
+            'manager-reading-desc': {"es":"El <strong class=\"text-cyan-400\">95,5% de los pacientes</strong> procede de la provincia de Formosa (con 1.274 personas aportadas por el interior provincial). Más de 190 pacientes provienen de provincias vecinas o de Paraguay, consolidando el perfil de referencia estratégica regional del centro.","zh":"<strong class=\"text-cyan-400\">95.5% 的就医患者</strong>来自福尔摩沙省（其中省内内陆市县达 1.274 人）。另有超过 190 名患者来自周边临省及邻国巴拉圭，彰显了本中心在区域高难度放疗与核医学诊断中的战略标杆地位。","en":"<strong class=\"text-cyan-400\">95.5% of patients</strong> come from Formosa Province (including 1,274 from the provincial interior). Over 190 patients come from neighboring provinces or Paraguay, consolidating the center's role as a regional benchmark of strategic care.","de":"<strong class=\"text-cyan-400\">95,5% der Patienten</strong> stammen aus der Provinz Formosa (davon 1.274 Personen aus dem Landesinneren). Über 190 Patienten kommen aus Nachbarprovinzen oder Paraguay, was die strategische regionale Referenzrolle des Zentrums unterstreicht."},
+            'team-badge': {"es":"Nuestro Equipo 2026","zh":"团队概况 2026","en":"Our Team 2026","de":"Unser Team 2026"},
+            'team-diversity-title': {"es":"Diversidad de Saberes","zh":"多学科知识与专业构架","en":"Diversity of Expertise","de":"Vielfalt des Wissens"},
+            'team-diversity-desc': {"es":"Perfiles que se complementan en el trabajo cotidiano (77 profesionales en total)","zh":"在日常诊疗与科研中紧密配合的专业队伍（共 77 名专职人才）","en":"Complementary talent working together every day (77 professionals in total)","de":"Sich ergänzende Profile in der täglichen Arbeit (insgesamt 77 Fachkräfte)"},
+            'team-technicians': {"es":"Técnicos","zh":"专业技术员","en":"Technicians","de":"Techniker"},
+            'team-technicians-sub': {"es":"Operación de equipos y radioterapia","zh":"大型医疗设备与放疗机组操作","en":"Equipment operation & radiotherapy","de":"Gerätebedienung & Strahlentherapie"},
+            'team-graduates': {"es":"Licenciados","zh":"学士与资深专员","en":"Licensed Specialists","de":"Diplomierte Fachkräfte"},
+            'team-graduates-sub': {"es":"Bioimágenes, enfermería y física","zh":"生物影像、专科护理及医学物理","en":"Bioimaging, nursing & physics","de":"Bio-Imaging, Pflege & Medizinphysik"},
+            'team-engineers': {"es":"Ingenieros","zh":"工程专家","en":"Engineers","de":"Ingenieure"},
+            'team-engineers-sub': {"es":"Bioingeniería y electromecánica","zh":"生物医学工程与机电设备保障","en":"Bioengineering & electromechanics","de":"Bio-Ingenieurwesen & Elektromechanik"},
+            'team-doctors': {"es":"Médicos","zh":"专科医生","en":"Physicians","de":"Ärzte"},
+            'team-doctors-sub': {"es":"Radioterapeutas y especialistas","zh":"放疗专科医师及临床医学专家","en":"Radiotherapists & clinical specialists","de":"Strahlentherapeuten & Fachärzte"},
+            'team-students': {"es":"Estudiantes","zh":"实习与研修生","en":"Trainees & Students","de":"Studenten & Praktikanten"},
+            'team-students-sub': {"es":"Prácticas y formación continua","zh":"临床实习与高科技核医学梯队培养","en":"Internships & continuous training","de":"Praktika & kontinuierliche Weiterbildung"},
+            'team-others': {"es":"Otros Perfiles","zh":"其他职能与支撑团队","en":"Other Profiles","de":"Weitere Profile"},
+            'team-others-sub': {"es":"Legal, contable y comunicación","zh":"法务、财务管理及新闻传媒设计","en":"Legal, finance & communications","de":"Recht, Finanzen & Kommunikation"},
+
             'nav-about': { es: 'Quiénes Somos', zh: '谁是我们', en: 'About Us', de: 'Über uns' },
             'nav-services': { es: 'Servicios', zh: '服务', en: 'Services', de: 'Dienstleistungen' },
             'nav-equipment': { es: 'Equipamiento', zh: '设备', en: 'Equipment', de: 'Ausstattung' },
-            'nav-reps': { es: 'Representantes', zh: '代表', en: 'Representatives', de: 'Vertreter' },
             'nav-contact': { es: 'Contacto', zh: '联系', en: 'Contact', de: 'Kontakt' },
             'header-title': { es: 'CENTRO DE MEDICINA NUCLEAR Y RADIOTERAPIA', zh: '核医学与放射治疗中心', en: 'CENTER FOR NUCLEAR MEDICINE AND RADIOTHERAPY', de: 'ZENTRUM FÜR NUKLEARMEDIZIN UND STRAHLENTHERAPIE' },
             'header-subtitle': { es: '"PDTE. DR. NÉSTOR C. KIRCHNER"', zh: '“总统 内斯托尔·C·基什内尔”', en: '"PRES. DR. NÉSTOR C. KIRCHNER"', de: '"PRÄS. DR. NÉSTOR C. KIRCHNER"' },
             'section-about-title': { es: 'Quiénes Somos', zh: '谁是我们', en: 'About Us', de: 'Über uns' },
-            'about-paragraph-1': { es: 'Somos una <strong class="text-secondary">FUNDACIÓN</strong> sin fines de lucro dedicada a brindar asistencia en salud, con un enfoque principal en el diagnóstico y tratamiento oncológico, así como en diversas patologías.', zh: '我们是一家非营利性基金会，致力于提供健康服务，主要关注肿瘤诊断和治疗，以及各种疾病。', en: 'We are a non-profit <strong class="text-secondary">FOUNDATION</strong> dedicated to providing health assistance, with a primary focus on oncological diagnosis and treatment, as well as various pathologies.', de: 'Wir sind eine gemeinnützige <strong class="text-secondary">STIFTUNG</strong>, die sich der Gesundheitsversorgung widmet, mit einem Hauptschwerpunkt auf onkologischer Diagnostik und Behandlung sowie verschiedenen Pathologien.' },
+            'about-paragraph-1': { es: 'Somos una <strong class="text-secondary">FUNDACIÓN</strong> sin fines de lucro ubicada en el norte de Argentina (limítrofe con Paraguay y Brasil) y en continuo crecimiento y expansión, dedicada a brindar asistencia en salud, con un enfoque principal en el diagnóstico y tratamiento oncológico, así como en diversas patologías.', zh: '我们是一家位于阿根廷北部（与巴拉圭和巴西接壤）、处于持续发展与扩张中的非营利性<strong class="text-secondary">基金会</strong>，致力于提供医疗健康援助，主要专注于肿瘤诊断和治疗以及各种疾病。', en: 'We are a non-profit <strong class="text-secondary">FOUNDATION</strong> located in northern Argentina (bordering Paraguay and Brazil) and in continuous growth and expansion, dedicated to providing health assistance, with a primary focus on oncological diagnosis and treatment, as well as various pathologies.', de: 'Wir sind eine gemeinnützige <strong class="text-secondary">STIFTUNG</strong> im Norden Argentiniens (angrenzend an Paraguay und Brasilien), die sich in kontinuierlichem Wachstum und stetiger Expansion befindet und sich der Gesundheitsversorgung mit Hauptschwerpunkt auf onkologischer Diagnostik und Behandlung sowie verschiedenen Pathologien widmet.' },
             'about-paragraph-2': { es: 'Nuestra institución cuenta con recursos humanos altamente especializados y una infraestructura única en la región, lo que nos permite ofrecer tratamientos de radioterapia, servicios de diagnóstico por imágenes, y un espacio dedicado al bienestar y la calidad de vida.', zh: '我们的机构拥有高度专业化的员工和该地区独特的设施，使我们能够提供放射治疗、影像诊断服务以及一个专注于福祉和生活质量的空间。', en: 'Our institution has highly specialized human resources and a unique infrastructure in the region, allowing us to offer radiotherapy treatments, diagnostic imaging services, and a space dedicated to well-being and quality of life.', de: 'Unsere Einrichtung verfügt über hochspezialisiertes Personal und eine in der Region einzigartige Infrastruktur, die es uns ermöglicht, Strahlentherapiebehandlungen, bildgebende Diagnostik und einen dem Wohlbefinden und der Lebensqualität gewidmeten Raum anzubieten.' },
             'about-mission-vision-title': { es: 'Nuestra Misión y Visión', zh: '我们的使命与愿景', en: 'Our Mission and Vision', de: 'Unsere Mission und Vision' },
             'about-mission': { es: '<strong class="text-secondary">Misión:</strong> Brindar servicios de excelencia en el cuidado de la salud a toda la comunidad, acompañando al paciente y su familia, buscando asegurar la equidad y accesibilidad.', zh: '<strong class="text-secondary">使命:</strong> 为整个社区提供卓越的医疗服务，陪伴患者及其家人，努力确保公平和可及性。', en: '<strong class="text-secondary">Mission:</strong> To provide excellent healthcare services to the entire community, accompanying the patient and their family, and seeking to ensure equity and accessibility.', de: '<strong class="text-secondary">Mission:</strong> Der gesamten Gemeinschaft exzellente Gesundheitsdienste anzubieten, Patienten und ihre Familien zu begleiten und dabei stets Gerechtigkeit und Barrierefreiheit zu gewährleisten.' },
             'about-vision': { es: '<strong class="text-secondary">Visión:</strong> Ser una institución de referencia a nivel nacional e internacional en cuidados de la salud, investigación y desarrollo, reconocida por la calidad y excelencia de sus servicios.', zh: '<strong class="text-secondary">愿景:</strong> 成为在医疗保健、研究和发展方面，以其服务质量和卓越性而闻名的国家和国际级机构。', en: '<strong class="text-secondary">Vision:</strong> To be a leading institution at a national and international level in healthcare, research, and development, recognized for the quality and excellence of its services.', de: '<strong class="text-secondary">Vision:</strong> Eine national und international führende Institution im Bereich Gesundheitsversorgung, Forschung und Entwicklung zu sein, anerkannt für die Qualität und Exzellenz ihrer Dienstleistungen.' },
+            'about-mission-vision-values-title': { es: 'Misión, Visión y Valores', zh: '使命、愿景与价值观', en: 'Mission, Vision and Values', de: 'Mission, Vision und Werte' },
+            'about-mission-title': { es: 'Misión', zh: '使命', en: 'Mission', de: 'Mission' },
+            'about-mission-text': { es: 'Brindar servicios de excelencia en el cuidado de la salud a toda la comunidad, acompañando al paciente y su familia, buscando asegurar la equidad y accesibilidad.', zh: '为整个社区提供卓越的医疗健康服务，陪伴患者及其家庭，努力确保公平与可及性。', en: 'To provide excellent healthcare services to the entire community, accompanying the patient and their family, and seeking to ensure equity and accessibility.', de: 'Der gesamten Gemeinschaft exzellente Gesundheitsdienste anzubieten, Patienten und ihre Familien zu begleiten und stets Gerechtigkeit und Barrierefreiheit zu gewährleisten.' },
+            'about-vision-title': { es: 'Visión', zh: '愿景', en: 'Vision', de: 'Vision' },
+            'about-vision-text': { es: 'Ser una institución de referencia a nivel nacional e internacional en cuidados de la salud, investigación y desarrollo, reconocida por la calidad y excelencia de sus servicios.', zh: '成为在医疗保健、研发领域享誉国内外且因其服务质量与卓越性而备受认可的标杆机构。', en: 'To be a benchmark institution at both national and international levels in healthcare, research, and development, recognized for the quality and excellence of its services.', de: 'Eine national und international führende Referenzinstitution im Bereich Gesundheitsversorgung, Forschung und Entwicklung zu sein, anerkannt für die Qualität und Exzellenz ihrer Dienstleistungen.' },
+            'about-values-title': { es: 'Nuestros Valores', zh: '我们的核心价值观', en: 'Our Values', de: 'Unsere Werte' },
+            'val-commitment-title': { es: 'Compromiso y Responsabilidad', zh: '承诺与责任', en: 'Commitment and Responsibility', de: 'Engagement und Verantwortung' },
+            'val-commitment-desc': { es: 'Nos comprometemos con la calidad de nuestros servicios para la población, con el desarrollo y transferencia de conocimiento a la sociedad, y con el crecimiento personal y profesional de nuestro recurso humano.', zh: '我们致力于为公众提供高质量的服务，促进知识向社会的转化与发展，并推动我们人才团队的个人与职业成长。', en: 'We are committed to the quality of our services for the population, the development and transfer of knowledge to society, and the personal and professional growth of our human talent.', de: 'Wir verpflichten uns zur Qualität unserer Dienstleistungen für die Bevölkerung, zur Entwicklung und zum Wissenstransfer an die Gesellschaft sowie zum persönlichen und beruflichen Wachstum unserer Mitarbeiter.' },
+            'val-equality-title': { es: 'Igualdad Social', zh: '社会平等', en: 'Social Equality', de: 'Soziale Gleichheit' },
+            'val-equality-desc': { es: 'Brindamos nuestros conocimientos y capacidad tecnológica a toda la población por igual.', zh: '我们平等地向全体公众提供我们的专业知识与先进技术能力。', en: 'We offer our knowledge and technological capabilities to the entire population equally.', de: 'Wir stellen unser Wissen und unsere technologische Leistungsfähigkeit der gesamten Bevölkerung gleichermaßen zur Verfügung.' },
+            'val-respect-title': { es: 'Respeto', zh: '尊重', en: 'Respect', de: 'Respekt' },
+            'val-respect-desc': { es: 'Construimos relaciones basadas en el reconocimiento del otro y en el respeto a su identidad individual y dignidad humana.', zh: '我们建立基于相互认可、尊重个体认同与人类尊严的人际关系。', en: 'We build relationships based on mutual recognition and respect for individual identity and human dignity.', de: 'Wir bauen Beziehungen auf, die auf der Anerkennung des Anderen und dem Respekt vor individueller Identität und Menschenwürde basieren.' },
+            'val-integrity-title': { es: 'Integridad', zh: '诚信', en: 'Integrity', de: 'Integrität' },
+            'val-integrity-desc': { es: 'Asumimos en todo momento y para todas las prestaciones una conducta ética, honesta, prudente, franca y transparente con todos aquellos con quienes nos vinculamos.', zh: '我们在任何时刻及各项医疗服务中，均对所有相关方秉持合乎伦理、诚实、谨慎、坦诚和透明的准则。', en: 'We uphold an ethical, honest, prudent, candid, and transparent conduct at all times and across all services with everyone we interact with.', de: 'Wir pflegen jederzeit und bei allen Leistungen ein ethisches, ehrliches, umsichtiges, aufrichtiges und transparentes Verhalten gegenüber allen, mit denen wir in Beziehung stehen.' },
+            'val-workculture-title': { es: 'Cultura de Trabajo e Integridad Institucional', zh: '工作文化与机构诚信', en: 'Work Culture and Institutional Integrity', de: 'Arbeitskultur und institutionelle Integrität' },
+            'val-workculture-desc': { es: 'Valoramos el esfuerzo y compromiso, incentivando los equipos multidisciplinarios, con capacitación y cooperación constante, y actitud de servicio orientada al bienestar del paciente. Mantenemos ética en nuestra gestión, decisiones estratégicas y relaciones institucionales.', zh: '我们重视付出与奉献，激励多学科团队，坚持持续培训与通力协作，树立以患者福祉为导向的服务态度。我们在管理运营、战略决策及机构关系中恪守崇高伦理。', en: 'We value effort and commitment, fostering multidisciplinary teams with continuous training, ongoing cooperation, and a service-oriented mindset centered on patient well-being. We maintain ethics in our management, strategic decisions, and institutional relationships.', de: 'Wir schätzen Einsatz und Engagement, fördern multidisziplinäre Teams durch ständige Weiterbildung, kontinuierliche Zusammenarbeit und eine auf das Wohl des Patienten ausgerichtete Diensthaltung. Wir wahren Ethik in unserer Führung, bei strategischen Entscheidungen und in institutionellen Beziehungen.' },
+            'val-leadership-title': { es: 'Liderazgo', zh: '行业领导力', en: 'Leadership', de: 'Führungsanspruch' },
+            'val-leadership-desc': { es: 'Somos líderes en tecnología, en el desarrollo de nuevas técnicas aplicadas a la salud y en recursos humanos altamente cualificados, consolidándonos como un centro modelo de referencia.', zh: '我们在尖端科技、健康应用新技术研发以及高素质人才团队方面处于领先地位，致力于成为典范式的标杆医疗中心。', en: 'We are leaders in technology, the development of new health-applied techniques, and highly qualified human resources, establishing ourselves as a reference model center.', de: 'Wir sind führend in Technologie, bei der Entwicklung neuer gesundheitsbezogener Verfahren und bei hochqualifiziertem Fachpersonal und etablieren uns als vorbildliches Referenzzentrum.' },
             'section-services-title': { es: 'Nuestros Servicios', zh: '我们的服务', en: 'Our Services', de: 'Unsere Dienstleistungen' },
             'services-intro': { es: 'Ofrecemos una amplia variedad de servicios especializados para brindar una atención integral.', zh: '我们提供广泛的专业服务，以提供全面的护理。', en: 'We offer a wide variety of specialized services to provide comprehensive care.', de: 'Wir bieten eine breite Palette spezialisierter Dienstleistungen für eine umfassende Versorgung.' },
             'service-radiotherapy-title': { es: 'Radioterapia', zh: '放射治疗', en: 'Radiotherapy', de: 'Strahlentherapie' },
@@ -841,18 +1456,10 @@
             'echo-li-1': { es: 'Diseño ergonómico que reduce la fatiga del profesional.', zh: '符合人体工程学的设计，减少专业人员的疲劳。', en: 'Ergonomic design that reduces professional fatigue.', de: 'Ergonomisches Design zur Verringerung der Ermüdung des Fachpersonals.' },
             'echo-li-2': { es: 'Variedad de sondas para diferentes exploraciones.', zh: '各种探头，适用于不同的检查。', en: 'Variety of probes for different explorations.', de: 'Vielfalt an Sonden für unterschiedliche Untersuchungen.' },
             'echo-li-3': { es: 'Ideal para ginecología, obstetricia, tiroides y más.', zh: '适用于妇科、产科、甲状腺等。', en: 'Ideal for gynecology, obstetrics, thyroid, and more.', de: 'Ideal für Gynäkologie, Geburtshilfe, Schilddrüse und mehr.' },
-            'section-cyclotron-title': { es: 'Ciclotrón', zh: '回旋加速器', en: 'Cyclotron', de: 'Zyklotron' },
+            'section-cyclotron-title': { es: 'Ciclotrón y Radiofarmacia', zh: '回旋加速器与放射药房', en: 'Cyclotron and Radiopharmacy', de: 'Zyklotron und Radiopharmazie' },
             'equipment-cyclotron-subtitle': { es: 'Healthcare PETracer 810', zh: '医疗保健 PETracer 810', en: 'Healthcare PETracer 810', de: 'Healthcare PETracer 810' },
             'equipment-cyclotron-text': { es: 'La serie PETtrace 800 de GE Healthcare constituye un sistema ciclotrón compacto y automatizado de doble partícula, diseñado específicamente para la producción de radiofármacos utilizados en tomografía por emisión de positrones (PET). El núcleo del PETtrace 800 está basado en un ciclotrón de iones negativos con plano medio vertical y diseño comprobado, capaz de acelerar protones y deuterones. Esta característica proporciona versatilidad operativa y favorece la producción a bajo costo de múltiples isótopos. El sistema permite integrar distintos blancos y módulos de síntesis, lo que amplía el espectro de radioisótopos accesibles para aplicaciones clínicas y de investigación.Entre los isótopos que pueden obtenerse destacan el oxígeno-15, nitrógeno-13, carbono-11 y flúor-18, junto con diversos radionúclidos de blancos sólidos. Una vez producidos, los isótopos son transferidos automáticamente a los sistemas de síntesis química, donde se convierten de manera en trazadores PET y precursores farmacéuticos listos para su aplicación. Este nivel de integración asegura reproducibilidad, seguridad y trazabilidad en toda la cadena de producción radiofarmacéutica.', zh: '通用电气医疗的PETtrace 800系列是一款紧凑且自动化的双粒子回旋加速器系统，专为生产用于正电子发射断层扫描（PET）的放射性药物而设计。PETtrace 800的核心基于经过验证的垂直中平面设计的负离子回旋加速器，能够加速质子和氘核。这一特点提供了操作的多功能性，并有助于以低成本生产多种同位素。该系统可以集成不同的靶标和合成模块，从而扩大了可用于临床和研究应用的放射性同位素范围。可以获得的同位素包括氧-15、氮-13、碳-11和氟-18，以及各种固体靶核素。一旦生产出来，这些同位素就会自动转移到化学合成系统，在那里它们被转化为PET示踪剂和现成的药用前体。这种集成水平确保了整个放射性药物生产链中的可重复性、安全性和可追溯性。', en: 'The GE Healthcare PETtrace 800 series is a compact and automated dual-particle cyclotron system, specifically designed for the production of radiopharmaceuticals used in positron emission tomography (PET). The core of the PETtrace 800 is based on a proven vertical mid-plane negative ion cyclotron design, capable of accelerating both protons and deuterons. This feature provides operational versatility and enables the low-cost production of multiple isotopes. The system allows for the integration of different targets and synthesis modules, which expands the range of radioisotopes accessible for clinical and research applications. Isotopes that can be obtained include oxygen-15, nitrogen-13, carbon-11, and fluorine-18, along with various solid-target radionuclides. Once produced, the isotopes are automatically transferred to chemical synthesis systems, where they are converted into PET tracers and pharmaceutical precursors ready for application. This level of integration ensures reproducibility, safety, and traceability throughout the entire radiopharmaceutical production chain.', de: 'Die Serie PETtrace 800 von GE Healthcare ist ein kompaktes, automatisiertes Zwei-Teilchen-Zyklotronsystem, das speziell für die Produktion von Radiopharmazeutika für die Positronen-Emissions-Tomographie (PET) entwickelt wurde. Der Kern des PETtrace 800 basiert auf einem Negativ-Ionen-Zyklotron mit bewährtem vertikalem Mittelebenen-Design, das sowohl Protonen als auch Deuteronen beschleunigen kann. Diese Eigenschaft bietet betriebliche Vielseitigkeit und ermöglicht die kostengünstige Produktion verschiedener Isotope. Das System ermöglicht die Integration verschiedener Targets und Synthesemodule, was das Spektrum zugänglicher Radioisotope für klinische und Forschungsanwendungen erweitert. Zu den herstellbaren Isotopen gehören Sauerstoff-15, Stickstoff-13, Kohlenstoff-11 und Fluor-18 sowie verschiedene feste Target-Radionuklide. Nach der Produktion werden die Isotope automatisch in chemische Synthesesysteme überführt und dort in anwendungsbereite PET-Tracer und pharmazeutische Vorläufer umgewandelt. Dieses hohe Integrationsniveau gewährleistet Reproduzierbarkeit, Sicherheit und Rückverfolgbarkeit in der gesamten radiopharmazeutischen Produktionskette.' },
             'equipment-cyclotron-image-alt': { es: 'Imagen de un Ciclotrón', zh: '回旋加速器的图片', en: 'Image of a Cyclotron', de: 'Bild eines Zyklotrons' },
-            'section-reps-title': { es: 'Representantes', zh: '代表', en: 'Representatives', de: 'Vertreter' },
-            'reps-intro': { es: 'Conoce a nuestro equipo de representantes, dedicados a la excelencia.', zh: '认识我们的团队代表，他们致力于追求卓越。', en: 'Meet our team of representatives, dedicated to excellence.', de: 'Lernen Sie unser Team von Repräsentanten kennen, die sich der Exzellenz verschrieben haben.' },
-            'rep-martin-name': { es: 'Martín Mutuberria', zh: '马丁·穆图贝里亚', en: 'Martín Mutuberria', de: 'Martín Mutuberria' },
-            'rep-martin-role': { es: 'CEO', zh: '首席执行官', en: 'CEO', de: 'CEO' },
-            'rep-gabriel-name': { es: 'Gabriel Martinez', zh: '加布里埃尔·马丁内斯', en: 'Gabriel Martinez', de: 'Gabriel Martinez' },
-            'rep-gabriel-role': { es: 'Gerente de Operaciones', zh: '运营经理', en: 'Operations Manager', de: 'Betriebsleiter' },
-            'rep-lucas-name': { es: 'Lucas Dordolo', zh: '卢卡斯·多尔多洛', en: 'Lucas Dordolo', de: 'Lucas Dordolo' },
-            'rep-lucas-role': { es: 'Director de Equipamiento Médico', zh: '医疗设备部主管', en: 'Head of Medical Equipment', de: 'Leiter für medizinische Ausstattung' },
             'section-contact-title': { es: 'Contacto', zh: '联系', en: 'Contact', de: 'Kontakt' },
             'contact-intro': { es: 'Estamos aquí para ayudarte. Ponte en contacto con nosotros.', zh: '我们在这里为您提供帮助。请与我们联系。', en: 'We are here to help you. Get in touch with us.', de: 'Wir sind hier, um Ihnen zu helfen. Nehmen Sie Kontakt mit uns auf.' },
             'contact-phones-title': { es: 'Teléfonos:', zh: '电话:', en: 'Phones:', de: 'Telefone:' },
@@ -982,6 +1589,80 @@
             if (labelEl && langInfo[targetLang]) labelEl.textContent = langInfo[targetLang].code;
 
             updateCarouselImages(targetLang);
+            if (typeof initServicesChart === "function") initServicesChart(targetLang);
+        }
+
+        
+        // Chart.js Pie/Donut Chart for Services
+        let servicesChartInstance = null;
+
+        function initServicesChart(lang = 'es') {
+            const ctx = document.getElementById('servicesPieChart');
+            if (!ctx || typeof Chart === 'undefined') return;
+
+            const labelsByLang = {
+                es: ['Diagnóstico por Imágenes', 'Bienestar y Calidad', 'Radioterapia', 'Oncología'],
+                en: ['Diagnostic Imaging', 'Well-being & Quality', 'Radiotherapy', 'Oncology'],
+                zh: ['医学影像诊断', '身心健康与营养', '放射治疗', '肿瘤综合治疗'],
+                de: ['Bildgebende Diagnostik', 'Wohlbefinden & Qualität', 'Strahlentherapie', 'Onkologie']
+            };
+
+            const labels = labelsByLang[lang] || labelsByLang['es'];
+            const dataValues = [3347, 1990, 1522, 142];
+
+            if (servicesChartInstance) {
+                servicesChartInstance.data.labels = labels;
+                servicesChartInstance.update();
+                return;
+            }
+
+            servicesChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: dataValues,
+                        backgroundColor: [
+                            '#0098ce', // Diagnóstico
+                            '#0d9488', // Bienestar
+                            '#1b3967', // Radioterapia
+                            '#f59e0b'  // Oncología
+                        ],
+                        borderColor: '#1e293b',
+                        borderWidth: 3,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#e2e8f0',
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 11
+                                },
+                                boxWidth: 12,
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.parsed || 0;
+                                    const total = 4216; // Pacientes únicos
+                                    const percent = ((value / total) * 100).toFixed(1);
+                                    return ' ' + context.label + ': ' + value.toLocaleString() + ' (' + percent + '%)';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '62%'
+                }
+            });
         }
 
         // Modal Logic
